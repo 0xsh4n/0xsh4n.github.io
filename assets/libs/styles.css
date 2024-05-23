@@ -8,12 +8,6 @@ body {
     color: #ecf0f1; /* Light text color */
     scroll-behavior: smooth; /* Smooth scrolling */
 }
-.favicon {
-    width: 100px; /* Adjust size as needed */
-    height: 100px; /* Adjust size as needed */
-    border-radius: 50%;
-    overflow: hidden;
-}
 header {
     background-color: #34495e; /* Dark blue-gray background */
     color: #fff;
@@ -23,12 +17,6 @@ header {
     top: 0;
     left: 0;
     z-index: 1000;
-    transition: background-color 0.3s; /* Animation for background color change */
-}
-
-header.scrolling {
-    background-color: rgba(52, 73, 94, 0.8); /* Transparent background color */
-    transition: background-color 0.3s ease; /* Smooth transition */
 }
 
 nav {
@@ -68,41 +56,6 @@ nav {
     background-color: #2980b9; /* Bright blue on hover */
     border-radius: 5px;
 }
-
-/* Hamburger menu icon */
-.menu-toggle {
-    display: none;
-    cursor: pointer;
-}
-
-.menu-toggle .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #000;
-    margin: 4px 0;
-}
-
-/* Mobile navigation */
-@media (max-width: 768px) {
-    /* Styles for screens up to 768px wide (tablets and below) */
-    #navbar {
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background-color: #34495e; /* Dark background */
-        flex-direction: column;
-        width: 100%;
-        display: none;
-    }
-
-    #navbar.active {
-        display: flex;
-    }
-
-    #navbar li {
-        text-align: center;
-        margin: 10px 0;
-    }
 
 .menu-toggle {
     display: none;
@@ -145,37 +98,24 @@ nav {
 
 /* Landing Section */
 .landing-section {
-    position: relative;
     height: 100vh;
-    background-image: url('/assets/images/landingpage.jpg');
-    background-size: cover;
-    background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    color: #ecf0f1;
     text-align: center;
-}
-
-.landing-section::before {
-    content: "600px";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+    padding: 20px;
 }
 
 .landing-content {
-    position: relative; /* Ensure content appears above the overlay */
-    z-index: 1; /* Ensure content appears above the overlay */
     max-width: 600px;
 }
 
 .landing-content h1 {
     font-size: 48px;
     margin-bottom: 20px;
+    font-family: 'Anonymous Pro', monospace;
 }
 
 .landing-content p {
@@ -232,6 +172,15 @@ nav {
     height: 300px; /* Increase height */
     border-radius: 50%;
     border: 4px solid #ecf0f1; /* Light border */
+    opacity: 0; /* Hidden by default */
+    transform: translateY(50px); /* Start 50px down */
+    transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition */
+}
+
+.social-icons {
+    margin-top: 20px;
+    display: block;
+    flex-direction:row;
 }
 
 .social-icons {
@@ -269,214 +218,203 @@ nav {
     transform: scale(1.1);
     filter: brightness(1.2); /* Slightly brighten on hover */
 }
-
 .about-text {
-    flex: 2;
-    padding: 20px;
-}
-.section-title {
-    font-size: 36px;
-    color: #e74c3c; /* Adjust color as needed */
-    margin-bottom: 20px;
-}
-.about-text h1 {
-    font-size: 36px;
-    color: #e74c3c; /* Red color for the heading */
-    margin-bottom: 20px;
-}
+        flex: 2;
+        padding: 20px;
+        opacity: 0; /* Hidden by default */
+        transform: translateY(50px); /* Start 50px down */
+        transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition */
+    }
 
-.about-text p {
-    font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+    .about-text h1 {
+        font-size: 36px;
+        color: #e74c3c; /* Red color for the heading */
+        margin-bottom: 20px;
+    }
 
-.resume-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #e74c3c; /* Red background */
-    color: #fff; /* White text */
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+    .about-text p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
 
-.resume-btn:hover {
-    background-color: #c0392b; /* Darker red on hover */
-}
-/* Add this CSS to style the links */
-.styled-link {
-    color: #e74c3c; /* Red color */
-    text-decoration: none;
-    border-bottom: 2px solid #e74c3c; /* Red underline */
-    transition: color 0.3s, border-bottom-color 0.3s; /* Smooth transition */
-}
+    .resume-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #e74c3c; /* Red background */
+        color: #fff; /* White text */
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-.styled-link:hover {
-    color: #c0392b; /* Darker red on hover */
-    border-bottom-color: #c0392b; /* Darker red underline on hover */
-}
+    .resume-btn:hover {
+        background-color: #c0392b; /* Darker red on hover */
+    }
 
-/* Blog Section */
-.blog-section {
-    padding: 100px 20px 20px; /* Padding adjusted to account for fixed header */
-    background-color: #f9f9f9; /* Light background for the section */
-    color: #333; /* Dark text color */
-    padding-bottom: 50px;
-}
-.blog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust column width */
-    gap: 30px;
-}
+    /* Animation class to make elements visible */
+    .animate {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
 
-.blog-post {
-    background-color: #fff; /* White background for each post */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
-}
+    .animate-on-load {
+        opacity: 0; /* Hidden by default */
+        transform: translateY(50px); /* Start 50px down */
+        transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition */
+    }
 
-.blog-post img {
-    width: 100%; /* Make thumbnail responsive */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px 10px 0 0; /* Rounded corners for top of image */
-}
+    /* Animation class to make elements visible on load */
+    .animate-on-load.animate {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
 
-.blog-post-content {
-    padding: 20px; /* Padding for content */
-}
+    /* Blog Section */
+    .blog-section {
+        padding: 100px 20px; /* Adjust padding */
+        background-color: #34495e; /* Dark blue-gray background */
+        color: #fff;
+    }
 
-.blog-post h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333; /* Dark text color for headings */
-}
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+        grid-gap: 30px;
+    }
 
-.blog-post p {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+    .blog-post {
+        background-color: #2c3e50; /* Darker background for blog post */
+        padding: 20px;
+        border-radius: 5px;
+    }
 
-.blog-read-more {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #e74c3c; /* Red background for read more button */
-    color: #fff; /* White text */
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    .blog-post img {
+        width: 100%;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
 
-}
+    .blog-post h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 
-.blog-read-more:hover {
-    background-color: #c0392b; /* Darker red on hover */
-}
+    .blog-post p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
 
-/*Project section */
+    .read-more-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #e74c3c; /* Red background */
+        color: #fff; /* White text */
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-.projects-section {
-    padding: 100px 20px 20px;
-    background-color: #2c3e50;
-    color: #333;
-}
+    .read-more-btn:hover {
+        background-color: #c0392b; /* Darker red on hover */
+    }
 
-.section-title {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 50px;
-    color: #fff;
-}
+    /* Projects Section */
+    .projects-section {
+        padding: 100px 20px; /* Adjust padding */
+        background-color: #2c3e50; /* Dark background */
+        color: #fff;
+    }
 
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    padding-bottom: 50px;
-}
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+        grid-gap: 30px;
+    }
 
-.project-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
+    .project-card {
+        background-color: #34495e; /* Dark blue-gray background */
+        padding: 20px;
+        border-radius: 5px;
+    }
 
-.project-card:hover {
-    transform: translateY(-10px);
-}
+    .project-card h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 
-.project-title {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
+    .project-card p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
 
-.project-description {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+    .project-card a {
+        color: #e74c3c; /* Red color for links */
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-.project-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+    .project-card a:hover {
+        text-decoration: underline;
+    }
 
-.project-link:hover {
-    background-color: #2980b9;
-}
-/*contact section*/
-.contact-section {
-    padding: 50px 0;
-    background-color: #fff;
-}
+    /* Contact Section */
+    .contact-section {
+        padding: 100px 20px; /* Adjust padding */
+        background-color: #34495e; /* Dark blue-gray background */
+        color: #fff;
+    }
 
-.contact-section .section-title {
-    font-size: 36px;
-    color: #333;
-    margin-bottom: 30px;
-}
+    .contact-info {
+        max-width: 600px;
+        margin: 0 auto;
+    }
 
-.contact-section .section-title {
-    font-size: 36px;
-    color: #333;
-    margin-bottom: 30px;
-}
+    .contact-info p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
 
-.contact-info ul {
-    padding: 0;
-}
+    .contact-info ul {
+        list-style: none;
+        padding: 0;
+    }
 
-.contact-info ul li {
-    display: inline-block;
-    margin: 0 10px;
-}
+    .contact-info li {
+        margin-bottom: 10px;
+    }
 
-.contact-info ul li a img {
-    width: 50px; /* Adjust the width as needed */
-    height: 50px; /* Adjust the height as needed */
-    transition: transform 0.3s ease; /* Add transition for smooth hover effect */
-}
+    .contact-info a {
+        color: #e74c3c; /* Red color for links */
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-.contact-info ul li a img:hover {
-    transform: scale(1.2); /* Scale up the icon on hover */
-}
+    .contact-info a:hover {
+        text-decoration: underline;
+    }
 
-/* footer */
-.footer {
-    background-color: #2c3e50; /* Dark background */
-    color: #ecf0f1; /* Light text color */
-    padding: 20px 0;
-    text-align: center;
-}
+    /* Footer */
+    footer {
+        background-color: #2c3e50; /* Dark slate background */
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
 
-.footer p {
-    margin: 0;
-}
+    footer p {
+        margin: 0;
+    }
+
+    footer a {
+        color: #e74c3c; /* Red color for links */
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
