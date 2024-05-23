@@ -64,56 +64,64 @@ nav {
     border-radius: 5px;
 }
 
-/* Hamburger menu icon */
+/* Hamburger Menu Mobile Styles */
 .menu-toggle {
-    display: none;
-    cursor: pointer;
+    display: none; /* Initially hide the hamburger icon */
 }
 
-.menu-toggle .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #000;
-    margin: 4px 0;
-}
-
-/* Mobile Styles */
-@media screen and (max-width: 100%) {
-    .menu-toggle {
-        display: block;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        z-index: 999;
-    }
+@media screen and (max-width: 768px) {
     #navbar {
-        display: none;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background-color: #333;
-        padding: 10px 0;
+        display: none; /* Hide the full navbar on smaller screens */
     }
-    #navbar li {
-        text-align: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #555;
+
+    .menu-toggle {
+        display: block; /* Display the hamburger icon on smaller screens */
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
     }
-    #navbar li:last-child {
-        border-bottom: none;
-    }
-    #navbar.show {
-        display: block;
-    }
+
     .bar {
         width: 25px;
         height: 3px;
-        background-color: #fff;
-        margin: 5px auto;
+        background-color: #333;
+        margin: 6px auto;
+        transition: all 0.3s ease-in-out;
     }
-    
+
+    .change .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 5px);
+    }
+
+    .change .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .change .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -5px);
+    }
+
+    /* Adjust the styling of the navbar when the hamburger icon is clicked */
+    .change .bar {
+        background-color: #fff;
+    }
+
+    .change .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 5px);
+    }
+
+    .change .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -5px);
+    }
+
+    .change .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    /* Show the navbar links when the hamburger icon is clicked */
+    .change ~ #navbar {
+        display: block;
+    }
 }
 
 
