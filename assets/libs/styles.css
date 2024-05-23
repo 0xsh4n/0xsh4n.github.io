@@ -174,7 +174,7 @@ nav {
 
 .about-text {
     width: 100%; /* Take full width on small screens */
-    text-align: center; /* Center content */
+    text-align: justify; /* Center content */
 }
 /* About Section */
 .about-section {
