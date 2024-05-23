@@ -86,7 +86,6 @@ nav {
         height: 3px;
         background-color: #333;
         margin: 6px auto;
-        transition: all 0.3s ease-in-out;
     }
 
     .change .bar:nth-child(1) {
