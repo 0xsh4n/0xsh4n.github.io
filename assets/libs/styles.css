@@ -158,7 +158,7 @@ nav {
 }
 
 .landing-section::before {
-    content: "";
+    content: "600px";
     position: absolute;
     top: 0;
     left: 0;
