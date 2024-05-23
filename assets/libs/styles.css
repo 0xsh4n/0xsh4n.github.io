@@ -69,7 +69,7 @@ nav {
     display: none; /* Initially hide the hamburger icon */
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1500px) {
     #navbar {
         display: none; /* Hide the full navbar on smaller screens */
     }
