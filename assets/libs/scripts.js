@@ -35,3 +35,11 @@ document.addEventListener("DOMContentLoaded", function() {
         nav.classList.toggle('active');
     });
 });
+function toggleMenu() {
+    var navbar = document.getElementById("navbar");
+    if (navbar.style.display === "block") {
+        navbar.style.display = "none";
+    } else {
+        navbar.style.display = "block";
+    }
+}
