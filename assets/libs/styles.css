@@ -263,6 +263,7 @@ nav {
     font-size: 18px;
     line-height: 1.6;
     margin-bottom: 20px;
+    text-align: justify; /* Center content */
 }
 
 .resume-btn {
