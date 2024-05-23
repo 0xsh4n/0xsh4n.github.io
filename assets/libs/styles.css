@@ -69,7 +69,7 @@ nav {
     display: none; /* Initially hide the hamburger icon */
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 768px) {
     #navbar {
         display: none; /* Hide the full navbar on smaller screens */
     }
@@ -88,38 +88,14 @@ nav {
         margin: 6px auto;
     }
 
-    .change .bar:nth-child(1) {
-        transform: rotate(-45deg) translate(-5px, 5px);
+    /* Show the navbar when the hamburger menu is clicked */
+    .show-nav {
+        display: block !important;
     }
 
-    .change .bar:nth-child(2) {
-        opacity: 0;
-    }
-
-    .change .bar:nth-child(3) {
-        transform: rotate(45deg) translate(-5px, -5px);
-    }
-
-    /* Adjust the styling of the navbar when the hamburger icon is clicked */
-    .change .bar {
-        background-color: #fff;
-    }
-
-    .change .bar:nth-child(1) {
-        transform: rotate(-45deg) translate(-5px, 5px);
-    }
-
-    .change .bar:nth-child(3) {
-        transform: rotate(45deg) translate(-5px, -5px);
-    }
-
-    .change .bar:nth-child(2) {
-        opacity: 0;
-    }
-
-    /* Show the navbar links when the hamburger icon is clicked */
-    .change ~ #navbar {
-        display: block;
+    /* Hide the navbar by default */
+    #navbar {
+        display: none;
     }
 }
 
