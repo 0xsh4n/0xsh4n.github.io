@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Security Assessment Checklist</title>
+    <style>
+        :root {
+            --neon-green: #00ff41;
+            --dark-bg: #0a0a0a;
+            --terminal-bg: #1a1a1a;
+            --completed: #00ff41;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--neon-green);
+            padding-bottom: 20px;
+        }
+
+        .title {
+            color: var(--neon-green);
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            margin: 0;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .section {
+            background-color: var(--terminal-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        }
+
+        .section-title {
+            color: var(--neon-green);
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: ">";
+            margin-right: 10px;
+            color: var(--neon-green);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .checklist-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neon-green);
+            border-radius: 3px;
+            margin-right: 10px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .checkbox:checked {
+            background-color: var(--completed);
+        }
+
+        .checkbox:checked::after {
+            content: "✓";
+            position: absolute;
+            color: black;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .sub-checklist {
+            margin-left: 30px;
+            margin-top: 5px;
+            color: #888;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: var(--terminal-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: var(--neon-green);
+            transition: width 0.3s ease;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px var(--neon-green); }
+            25% { text-shadow: -2px -2px #ff00ff; }
+            50% { text-shadow: 2px -2px #00ffff; }
+            75% { text-shadow: -2px 2px var(--neon-green); }
+            100% { text-shadow: 2px 2px var(--neon-green); }
+        }
+
+        .title:hover {
+            animation: glitch 0.3s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Web Security Assessment Checklist</h1>
+            <p class="subtitle">Manual Vulnerability Assessment Protocol</p>
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Authentication Vulnerabilities</h2>
+            <ul class="checklist">
+                <li class="checklist-item">
+                    <input type="checkbox" class="checkbox">
+                    <div>
+                        <span>Test for weak password policies</span>
+                        <ul class="sub-checklist">
+                            <li>Minimum length requirements</li>
+                            <li>Complexity requirements</li>
+                            <li>Common password restrictions</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="checklist-item">
+                    <input type="checkbox" class="checkbox">
+                    <div>
+                        <span>Check for bruteforce protection</span>
+                        <ul class="sub-checklist">
+                            <li>Account lockout after failed attempts</li>
+                            <li>CAPTCHA implementation</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Input Validation</h2>
+            <ul class="checklist">
+                <li class="checklist-item">
+                    <input type="checkbox" class="checkbox">
+                    <div>
+                        <span>Test for Cross-Site Scripting (XSS)</span>
+                        <ul class="sub-checklist">
+                            <li>Input fields</li>
+                            <li>URL parameters</li>
+                            <li>HTTP headers</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="checklist-item">
+                    <input type="checkbox" class="checkbox">
+                    <div>
+                        <span>Check for SQL Injection</span>
+                        <ul class="sub-checklist">
+                            <li>Search fields</li>
+                            <li>Login forms</li>
+                            <li>User input fields</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Access Control</h2>
+            <ul class="checklist">
+                <li class="checklist-item">
+                    <input type="checkbox" class="checkbox">
+                    <div>
+                        <span>Test vertical privilege escalation</span>
+                        <ul class="sub-checklist">
+                            <li>Admin functions</li>
+                            <li>User role boundaries</li>
+                            <li>Privileged operations</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="checklist-item">
+                    <input type="checkbox" class="checkbox">
+                    <div>
+                        <span>Check horizontal privilege escalation</span>
+                        <ul class="sub-checklist">
+                            <li>User data access</li>
+                            <li>Resource permissions</li>
+                            <li>Account settings</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Update progress bar based on checked items
+        function updateProgress() {
+            const totalCheckboxes = document.querySelectorAll('.checkbox').length;
+            const checkedCheckboxes = document.querySelectorAll('.checkbox:checked').length;
+            const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('.checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateProgress);
+        });
+
+        // Initialize progress bar
+        updateProgress();
+    </script>
+</body>
+</html>
