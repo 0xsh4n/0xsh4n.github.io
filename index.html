@@ -1,269 +1,339 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Home</title>
-    <link rel="stylesheet" href="/assets/libs/styles.css">
+    <title>0xsh4n | Security Analyst</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
+        :root[data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --accent: #ff6b00;
+            --accent-hover: #ff8533;
+            --card-bg: #ffffff;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        :root[data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent: #ff6b00;
+            --accent-hover: #ff8533;
+            --card-bg: #2d2d2d;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            --nav-bg: rgba(26, 26, 26, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Ubuntu', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .nav-container {
+            background: var(--nav-bg);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--bg-secondary);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .resource-card i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="scrolling">
+    <div class="nav-container">
         <nav>
             <div class="logo">0xsh4n</div>
-                <div class="menu-toggle" onclick="toggleMenu()">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-
-            <ul id="navbar">
-                <li><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#blog">Blogs</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#blog">Blog</a>
+                <a href="#projects">Projects</a>
+                <a href="#resources">Resources</a>
+                <a href="#contact">Contact</a>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </nav>
-    </header>
-        
-    <section class="landing-section">
-        <div class="landing-content">
-            <h1>Welcome to My Home</h1>
-            <p>Alright, let's explore more about me !!</p>
-            <a href="#about" class="cta-btn">Let's Go</a>
+    </div>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Security Researcher & CTF Player</h1>
+            <p>Specializing in Vulnerability Research and Web Security</p>
+            <a href="#about" class="btn">Learn More</a>
         </div>
     </section>
 
-    <section id="about" class="about-section">
-        <div class="container">
-            <div class="card animate-on-load">
-                <div class="profile-section">
-                    <img src="/assets/images/profile.jpg" alt="Profile Picture" class="profile-img">
-                        <!-- Social Media Icons -->
-                        <div class="social-icons">
-                            <a href="https://github.com/0xsh4n" target="_blank">
-                                <div class="social-icon github"></div>
-                            </a>
-                            <a href="https://instagram.com/0xsh4n" target="_blank">
-                                <div class="social-icon instagram"></div>
-                            </a>
-                            <a href="https://x.com/mr_5han" target="_blank">
-                                <div class="social-icon x"></div>
-                            </a>
-                            <a href="https://www.linkedin.com/in/ajmalshan/" target="_blank">
-                                <div class="social-icon linkedin"></div>
-                            </a>
-                        </div>
-                    <br>
-                    <a href="/assets/docs/resume.pdf" class="resume-btn" download>Download Resume</a>
-                </div>
-                <div class="about-text">
-                    <p>Hello, I'm Shan, a passionate Computer Science Engineering student from South India. My journey into the world of technology began at a young age, and since then, I've been captivated by the endless possibilities it offers.</p>
-                    <p>I specialize in Cyber Security and have a keen interest in discovering vulnerabilities and crafting innovative solutions to address them. My dedication to staying updated with the latest trends and technologies in the field allows me to tackle complex challenges head-on.</p>
-                    <p>Beyond my academic pursuits, I am actively involved in various projects and initiatives aimed at enhancing cybersecurity awareness and promoting ethical hacking practices. I believe in the power of collaboration and am always eager to connect with like-minded individuals who share my passion for technology.</p>
-                    <p>In my free time, you'll often find me participating in Capture The Flag (CTF) competitions, engaging in bug bounty programs, or exploring new tools and techniques to sharpen my skills. I'm also an avid reader and enjoy delving into cybersecurity-related literature to expand my knowledge further.</p>
-                    <!-- Add the new styled links -->
-                    <p>Explore my <a href="https://tryhackme.com/p/phoenix770" class="styled-link" target="_blank">TryHackMe profile</a> to see my progress and achievements in the cybersecurity field.</p>
-                    <p>Read my insightful articles on cybersecurity and technology on <a href="https://mrshan.medium.com/" class="styled-link" target="_blank">Medium</a>.</p>
-                </div>
+    <section id="about" class="section">
+        <h2 class="section-title">About Me</h2>
+        <div class="card">
+            <p>Hello, I'm Shan, a passionate Computer Science Engineering student from South India. My journey into the world of technology began at a young age, and since then, I've been captivated by the endless possibilities it offers.</p>
+            <p>I specialize in Cyber Security and have a keen interest in discovering vulnerabilities and crafting innovative solutions to address them.</p>
+            <div class="social-icons">
+                <a href="https://github.com/0xsh4n" target="_blank" class="social-icon">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://instagram.com/0xsh4n" target="_blank" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://x.com/mr_5han" target="_blank" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/ajmalshan/" target="_blank" class="social-icon">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
         </div>
     </section>
-    
 
-<!-- Inside the blog section -->
-<section id="blog" class="blog-section">
-    <div class="container">
-        <h1 style="font-size: 36px;color:#c0392b;">Reading Area</h1>
-        <div class="blog-grid">
-
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/modapp.png" alt="Blog 0" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">Mod Apps and It's Risks</h2>
-                    <p class="blog-description">Explaining Risk of mod apps usages in daily usages.</p>
-                    <a href="https://mrshan.medium.com/mod-apps-and-its-risk-47a67795efd1" class="blog-read-more">Read More</a>
-                </div>
+    <section id="resources" class="section">
+        <h2 class="section-title">Resources</h2>
+        <div class="resources-grid">
+            <div class="resource-card">
+                <i class="fas fa-clipboard-check"></i>
+                <h3>Security Checklists</h3>
+                <p>Comprehensive security assessment checklists</p>
+                <a href="/checklists" class="btn">View Checklists</a>
             </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/windows_exploitation.jpg" alt="Blog 1" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">Windows Exploitation Learning Path in TryHackMe</h2>
-                    <p class="blog-description">Free TryHackme Windows Exploitation Learning paths.</p>
-                    <a href="https://mrshan.medium.com/windows-exploitation-learning-path-in-tryhackme-8fa680daa775" class="blog-read-more">Read More</a>
-                </div>
+            <div class="resource-card">
+                <i class="fas fa-book"></i>
+                <h3>Blog Articles</h3>
+                <p>In-depth technical articles and tutorials</p>
+                <a href="/blog" class="btn">Read Articles</a>
             </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/api_security.jpg" alt="Blog 2" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">API Security: Web Security Academy</h2>
-                    <p class="blog-description">API security, as explored in Web Security Academy by PortSwigger.</p>
-                    <a href="https://mrshan.medium.com/api-security-web-security-academy-3578589fc3fa" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/pmat-course.png" alt="Blog 3" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">PMAT - Writeup and Review </h2>
-                    <p class="blog-description">PMAT (Practical Malware Analysis and Triage) Writeup as part of course completion.</p>
-                    <a href="https://mrshan.medium.com/pmat-writeup-2d7f1b4e89e0" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/malanalysis.png" alt="Blog 4" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">Malware Analysis for Noobs</h2>
-                    <p class="blog-description">Explaining malware analysis and how it works for beginners.</p>
-                    <a href="https://mrshan.medium.com/malware-analysis-for-nooobs-ba3a53cf025b" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/ciatriad.jpg" alt="Blog 5" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">CIA Triad</h2><br>
-                    <p class="blog-description">A post on explaining the CIA (Confidentiality,Integrity,Availability) Triad and the importance of it.</p>
-                    <a href="https://mrshan.medium.com/the-cia-triad-b2c5988ae3bf" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/spidersuite.png" alt="Blog 6" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">SpiderSuite - A brief note</h2>
-                    <p class="blog-description">SpiderSuite is a tool used for advance crawling of webpages having multiple features.</p>
-                    <a href="https://mrshan.medium.com/spidersuite-a-brief-note-632f0a198076" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/naabu.png" alt="Blog 7" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">Naabu Port Scanner - A brief note</h2>
-                    <p class="blog-description">Naabu is a port scanner made by Project Discovery. It is an open port scanner written in Go Language.</p>
-                    <a href="https://mrshan.medium.com/naabu-port-scanner-why-you-should-use-it-947d8ca025df" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/adminpage.jpg" alt="Blog 8" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">Admin Page Takeover</h2>
-                    <p class="blog-description">A short writeup on how I accessed an Admin panel using default credentials.</p>
-                    <a href="https://mrshan.medium.com/admin-page-takeover-6947d7700a9d" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-            
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/picoctf.png" alt="Blog 9" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">picoCTF - Dont-use-client-side</h2>
-                    <p class="blog-description">A short writeup on picoCTF Dont use client side challenge.</p>
-                    <a href="https://mrshan.medium.com/picoctf-dont-use-client-side-web-exploitation-860c46433356" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/picoctf.png" alt="Blog 10" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">picoCTF - Logon Challenge</h2>
-                    <p class="blog-description">A short writeup on picoCTF Logon Web Exploitation challenge.</p>
-                    <a href="https://mrshan.medium.com/picoctf-logon-web-exploitation-37fab7daa26" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/picoctf.png" alt="Blog 11" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">picoCTF - Where are the Robots</h2>
-                    <p class="blog-description">A short writeup on picoCTF Where are the Robots challenge.</p>
-                    <a href="https://mrshan.medium.com/pico-ctf-where-are-the-robots-web-exploitation-f16c240c42e4" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/picoctf.png" alt="Blog 12" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">picoCTF - More Cookies</h2>
-                    <p class="blog-description">A short writeup on picoCTF More Cookies challenge.</p>
-                    <a href="https://mrshan.medium.com/picoctf-more-cookies-web-exploitation-1238e29e75fe" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/picoctf.png" alt="Blog 13" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">picoCTF - Static ain't always noise</h2>
-                    <p class="blog-description">A short writeup on picoCTF Static ain't always noise challenge.</p>
-                    <a href="https://mrshan.medium.com/pico-ctf-static-aint-always-noise-general-skill-aa5a35d3ff1a" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-
-            <div class="blog-post">
-                <img src="/assets/images/blogThumb/picoctf.png" alt="Blog 14" class="blog-thumbnail">
-                <div class="blog-post-content">
-                    <h2 class="blog-title">picoCTF - Wave a flag</h2>
-                    <p class="blog-description">A short writeup on picoCTF Wave a flag challenge.</p>
-                    <a href="https://mrshan.medium.com/pico-ctf-wave-a-flag-general-skill-5cca153dbe13" class="blog-read-more">Read More</a>
-                </div>
-            </div>
-
-            <!-- Repeat for other blog posts -->
-        </div>
-    </div>
-</section>
-<!-- Project section-->
-<section id="projects" class="projects-section">
-    <div class="container">
-        <h2 class="section-title">Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card">                    
-                <img src="/assets/images/subcracker.jpg" alt="Project Thumbnail" class="project-thumbnail">
-                <h3 class="project-title">SubCracker</h3>
-                <p class="project-description">SubCracker - A subdomain lister/bruteforcer. A simple tool to bruteforce subdomains of a website.</p>
-                <a href="https://github.com/0xsh4n/subcracker" class="project-link">View on GitHub</a>
-            </div>
-            <div class="project-card">
-                <img src="/assets/images/pydetect.png" alt="Project Thumbnail" class="project-thumbnail">
-                <h3 class="project-title">pyDetect</h3>
-                <p class="project-description">pyDetect is a Host Based Intrusion Detection System made for apache2 and nginx servers to analyze the log files.</p>
-                <a href="https://github.com/0xsh4n/pyDetect" class="project-link">View on GitHub</a>
-            </div>        
-            <div class="project-card">
-                <img src="/assets/images/numgather.jpg" alt="Project Thumbnail" class="project-thumbnail">
-                <h3 class="project-title">NumGather</h3>
-                <p class="project-description">NumGatherer - A tool to show the country of origin of a phone number and its ISP.</p>
-                <a href="https://github.com/0xsh4n/NumGather" class="project-link">View on GitHub</a>
+            <div class="resource-card">
+                <i class="fas fa-tools"></i>
+                <h3>Tools & Scripts</h3>
+                <p>Security tools and useful scripts</p>
+                <a href="/tools" class="btn">Browse Tools</a>
             </div>
         </div>
-    </div>
-</section>
-<!--Contact section -->
-<section id="contact" class="contact-section">
-    <div class="container">
-        <h2 class="section-title">Contact Me</h2>
-        <div class="contact-info">
-            <ul>
-                <li><a href="mailto:ajmalshan2770@gmail.com"><img src="assets/icons/gmail.png" alt="Gmail icon" class="contact-icon"></a></li>
-                <li><a href="https://www.linkedin.com/in/ajmalshan" target="_blank"><img src="assets/icons/linkedin.png" alt="LinkedIn icon" class="contact-icon"></a></li>
-            </ul>
-        </div>
-    </div>
-</section>
+    </section>
 
-<footer class="footer">
-    <div class="container">
-        <p>&copy; 2024 Your Website. All rights reserved.</p>
-    </div>
-</footer>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            
+            const themeIcon = document.querySelector('.theme-toggle i');
+            themeIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
 
-    <script src="/assets/libs/scripts.js"></script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-
-
