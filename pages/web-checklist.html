@@ -1,260 +1,329 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Security Assessment Checklist</title>
+    <title>Manual Web Pentesting Checklist | 0xsh4n</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --neon-green: #00ff41;
-            --dark-bg: #0a0a0a;
-            --terminal-bg: #1a1a1a;
-            --completed: #00ff41;
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
+        :root[data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --accent: #ff6b00;
+            --accent-hover: #ff8533;
+            --card-bg: #ffffff;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --critical: #dc3545;
+            --high: #fd7e14;
+            --medium: #ffc107;
+            --low: #28a745;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent: #ff6b00;
+            --accent-hover: #ff8533;
+            --card-bg: #2d2d2d;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            --nav-bg: rgba(26, 26, 26, 0.95);
+            --critical: #ff4d5e;
+            --high: #ff934d;
+            --medium: #ffce3d;
+            --low: #34ce57;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Ubuntu', sans-serif;
         }
 
         body {
-            background-color: var(--dark-bg);
-            color: #e0e0e0;
-            font-family: 'Courier New', monospace;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
-            margin: 0;
-            padding: 20px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 2rem;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--neon-green);
-            padding-bottom: 20px;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        .title {
-            color: var(--neon-green);
-            font-size: 2.5em;
-            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
-            margin: 0;
+        .header h1 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
 
-        .subtitle {
-            color: #888;
-            font-size: 1.2em;
-            margin-top: 10px;
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
         }
 
-        .section {
-            background-color: var(--terminal-bg);
-            border: 1px solid var(--neon-green);
-            border-radius: 5px;
-            margin-bottom: 20px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        .severity-section {
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        .section-title {
-            color: var(--neon-green);
-            font-size: 1.5em;
-            margin-top: 0;
-            margin-bottom: 15px;
+        .severity-header {
             display: flex;
             align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
         }
 
-        .section-title::before {
-            content: ">";
-            margin-right: 10px;
-            color: var(--neon-green);
+        .severity-icon {
+            font-size: 1.5rem;
+        }
+
+        .critical .severity-icon {
+            color: var(--critical);
+        }
+
+        .high .severity-icon {
+            color: var(--high);
+        }
+
+        .medium .severity-icon {
+            color: var(--medium);
+        }
+
+        .low .severity-icon {
+            color: var(--low);
+        }
+
+        .severity-title {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
         .checklist {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
         }
 
         .checklist-item {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--text-secondary);
         }
 
-        .checkbox {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--neon-green);
-            border-radius: 3px;
-            margin-right: 10px;
+        .checklist-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .checklist-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .checklist-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-steps {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .test-steps li {
+            margin-bottom: 0.3rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
             cursor: pointer;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .checkbox:checked {
-            background-color: var(--completed);
-        }
-
-        .checkbox:checked::after {
-            content: "✓";
-            position: absolute;
-            color: black;
-            font-size: 14px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .sub-checklist {
-            margin-left: 30px;
-            margin-top: 5px;
-            color: #888;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background-color: var(--terminal-bg);
-            border: 1px solid var(--neon-green);
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress {
-            width: 0%;
-            height: 100%;
-            background-color: var(--neon-green);
-            transition: width 0.3s ease;
-        }
-
-        @keyframes glitch {
-            0% { text-shadow: 2px 2px var(--neon-green); }
-            25% { text-shadow: -2px -2px #ff00ff; }
-            50% { text-shadow: 2px -2px #00ffff; }
-            75% { text-shadow: -2px 2px var(--neon-green); }
-            100% { text-shadow: 2px 2px var(--neon-green); }
-        }
-
-        .title:hover {
-            animation: glitch 0.3s infinite;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </button>
+
     <div class="container">
         <div class="header">
-            <h1 class="title">Web Security Assessment Checklist</h1>
-            <p class="subtitle">Manual Vulnerability Assessment Protocol</p>
-            <div class="progress-bar">
-                <div class="progress" id="progressBar"></div>
+            <h1>Manual Web Pentesting Checklist</h1>
+            <p>A comprehensive guide for manual web application security testing</p>
+        </div>
+
+        <div class="severity-section">
+            <div class="severity-header critical">
+                <i class="fas fa-radiation-alt severity-icon"></i>
+                <h2 class="severity-title">Critical Severity</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <h3>SQL Injection (Manual)</h3>
+                    <p>Test input fields for SQL injection vulnerabilities using manual payloads</p>
+                    <ul class="test-steps">
+                        <li>Test single quotes (') and double quotes (")</li>
+                        <li>Try boolean conditions (AND 1=1, AND 1=2)</li>
+                        <li>Attempt time-based payloads (SLEEP, WAITFOR DELAY)</li>
+                        <li>Test for UNION-based injection</li>
+                    </ul>
+                </div>
+                <div class="checklist-item">
+                    <h3>Remote Code Execution</h3>
+                    <p>Check for possible command injection points</p>
+                    <ul class="test-steps">
+                        <li>Test file upload functionality</li>
+                        <li>Check input fields that might process server commands</li>
+                        <li>Verify file inclusion parameters</li>
+                    </ul>
+                </div>
+                <div class="checklist-item">
+                    <h3>Authentication Bypass</h3>
+                    <p>Test authentication mechanisms for bypass possibilities</p>
+                    <ul class="test-steps">
+                        <li>Try parameter manipulation</li>
+                        <li>Test direct page access</li>
+                        <li>Check for logic flaws in authentication flow</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div class="section">
-            <h2 class="section-title">Authentication Vulnerabilities</h2>
-            <ul class="checklist">
-                <li class="checklist-item">
-                    <input type="checkbox" class="checkbox">
-                    <div>
-                        <span>Test for weak password policies</span>
-                        <ul class="sub-checklist">
-                            <li>Minimum length requirements</li>
-                            <li>Complexity requirements</li>
-                            <li>Common password restrictions</li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="checklist-item">
-                    <input type="checkbox" class="checkbox">
-                    <div>
-                        <span>Check for bruteforce protection</span>
-                        <ul class="sub-checklist">
-                            <li>Account lockout after failed attempts</li>
-                            <li>CAPTCHA implementation</li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+        <div class="severity-section">
+            <div class="severity-header high">
+                <i class="fas fa-exclamation-triangle severity-icon"></i>
+                <h2 class="severity-title">High Severity</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <h3>Cross-Site Scripting (XSS)</h3>
+                    <p>Test all input fields for XSS vulnerabilities</p>
+                    <ul class="test-steps">
+                        <li>Test basic payloads (&lt;script&gt;alert(1)&lt;/script&gt;)</li>
+                        <li>Try event handlers (onmouseover, onclick)</li>
+                        <li>Check for DOM-based XSS</li>
+                        <li>Test HTML injection points</li>
+                    </ul>
+                </div>
+                <div class="checklist-item">
+                    <h3>CSRF Vulnerabilities</h3>
+                    <p>Check for Cross-Site Request Forgery protections</p>
+                    <ul class="test-steps">
+                        <li>Verify CSRF token implementation</li>
+                        <li>Test token validation</li>
+                        <li>Check token presence in sensitive operations</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="section">
-            <h2 class="section-title">Input Validation</h2>
-            <ul class="checklist">
-                <li class="checklist-item">
-                    <input type="checkbox" class="checkbox">
-                    <div>
-                        <span>Test for Cross-Site Scripting (XSS)</span>
-                        <ul class="sub-checklist">
-                            <li>Input fields</li>
-                            <li>URL parameters</li>
-                            <li>HTTP headers</li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="checklist-item">
-                    <input type="checkbox" class="checkbox">
-                    <div>
-                        <span>Check for SQL Injection</span>
-                        <ul class="sub-checklist">
-                            <li>Search fields</li>
-                            <li>Login forms</li>
-                            <li>User input fields</li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+        <div class="severity-section">
+            <div class="severity-header medium">
+                <i class="fas fa-exclamation-circle severity-icon"></i>
+                <h2 class="severity-title">Medium Severity</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <h3>Security Misconfigurations</h3>
+                    <p>Check for common security misconfigurations</p>
+                    <ul class="test-steps">
+                        <li>Review HTTP security headers</li>
+                        <li>Check for sensitive information in source code</li>
+                        <li>Verify error handling messages</li>
+                    </ul>
+                </div>
+                <div class="checklist-item">
+                    <h3>Password Policy</h3>
+                    <p>Test password requirements and restrictions</p>
+                    <ul class="test-steps">
+                        <li>Check minimum password length</li>
+                        <li>Test password complexity requirements</li>
+                        <li>Verify password change functionality</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="section">
-            <h2 class="section-title">Access Control</h2>
-            <ul class="checklist">
-                <li class="checklist-item">
-                    <input type="checkbox" class="checkbox">
-                    <div>
-                        <span>Test vertical privilege escalation</span>
-                        <ul class="sub-checklist">
-                            <li>Admin functions</li>
-                            <li>User role boundaries</li>
-                            <li>Privileged operations</li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="checklist-item">
-                    <input type="checkbox" class="checkbox">
-                    <div>
-                        <span>Check horizontal privilege escalation</span>
-                        <ul class="sub-checklist">
-                            <li>User data access</li>
-                            <li>Resource permissions</li>
-                            <li>Account settings</li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+        <div class="severity-section">
+            <div class="severity-header low">
+                <i class="fas fa-info-circle severity-icon"></i>
+                <h2 class="severity-title">Low Severity</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <h3>Information Disclosure</h3>
+                    <p>Look for unnecessary information disclosure</p>
+                    <ul class="test-steps">
+                        <li>Check for version information</li>
+                        <li>Review HTML comments</li>
+                        <li>Inspect response headers</li>
+                    </ul>
+                </div>
+                <div class="checklist-item">
+                    <h3>Cookie Attributes</h3>
+                    <p>Verify cookie security settings</p>
+                    <ul class="test-steps">
+                        <li>Check Secure flag</li>
+                        <li>Verify HttpOnly attribute</li>
+                        <li>Test SameSite attribute</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Update progress bar based on checked items
-        function updateProgress() {
-            const totalCheckboxes = document.querySelectorAll('.checkbox').length;
-            const checkedCheckboxes = document.querySelectorAll('.checkbox:checked').length;
-            const progress = (checkedCheckboxes / totalCheckboxes) * 100;
-            document.getElementById('progressBar').style.width = `${progress}%`;
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            
+            const themeIcon = document.querySelector('.theme-toggle i');
+            themeIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
         }
-
-        // Add event listeners to all checkboxes
-        document.querySelectorAll('.checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', updateProgress);
-        });
-
-        // Initialize progress bar
-        updateProgress();
     </script>
 </body>
 </html>
