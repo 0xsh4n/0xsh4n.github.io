@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual Web Pentesting Checklist | 0xsh4n</title>
+    <title>Advanced Web Penetration Testing Checklist | 50+ Vulnerabilities</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
@@ -22,6 +22,7 @@
             --high: #fd7e14;
             --medium: #ffc107;
             --low: #28a745;
+            --info: #17a2b8;
         }
 
         :root[data-theme="dark"] {
@@ -38,6 +39,7 @@
             --high: #ff934d;
             --medium: #ffce3d;
             --low: #34ce57;
+            --info: #3fc1d0;
         }
 
         * {
@@ -112,6 +114,10 @@
             color: var(--low);
         }
 
+        .info .severity-icon {
+            color: var(--info);
+        }
+
         .severity-title {
             font-size: 1.5rem;
             font-weight: 700;
@@ -125,8 +131,8 @@
         }
 
         .checklist-item {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--text-secondary);
         }
 
@@ -137,9 +143,12 @@
         }
 
         .checklist-item h3 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 0.5rem;
             color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .checklist-item p {
@@ -155,18 +164,7 @@
         }
 
         .test-steps li {
-            margin-bottom: 0.3rem;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            margin-bottom: 0.5rem;
         }
 
         .theme-toggle {
@@ -181,6 +179,23 @@
             padding: 0.5rem;
             z-index: 1000;
         }
+
+        .reference {
+            font-size: 0.9rem;
+            color: var(--info);
+            margin-top: 0.5rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -190,8 +205,8 @@
 
     <div class="container">
         <div class="header">
-            <h1>Manual Web Pentesting Checklist</h1>
-            <p>A comprehensive guide for manual web application security testing</p>
+            <h1>Advanced Web Penetration Testing Checklist</h1>
+            <p>Comprehensive security assessment guide covering 50+ vulnerabilities</p>
         </div>
 
         <div class="severity-section">
@@ -201,31 +216,54 @@
             </div>
             <div class="checklist">
                 <div class="checklist-item">
-                    <h3>SQL Injection (Manual)</h3>
-                    <p>Test input fields for SQL injection vulnerabilities using manual payloads</p>
+                    <h3><i class="fas fa-bug"></i> Advanced SQL Injection Vectors</h3>
+                    <p>Complex SQL injection techniques and advanced exploitation methods</p>
                     <ul class="test-steps">
-                        <li>Test single quotes (') and double quotes (")</li>
-                        <li>Try boolean conditions (AND 1=1, AND 1=2)</li>
-                        <li>Attempt time-based payloads (SLEEP, WAITFOR DELAY)</li>
-                        <li>Test for UNION-based injection</li>
+                        <li>Test for stacked queries using semicolon (;)</li>
+                        <li>Attempt blind SQL injection with conditional responses</li>
+                        <li>Test for Out-of-band SQL injection (DNS/HTTP requests)</li>
+                        <li>Exploit second-order SQL injection scenarios</li>
+                        <li>Test for SQL injection in JSON/XML parameters</li>
+                        <li>Attempt SQLi through HTTP headers (User-Agent, Referer)</li>
                     </ul>
                 </div>
+
                 <div class="checklist-item">
-                    <h3>Remote Code Execution</h3>
-                    <p>Check for possible command injection points</p>
+                    <h3><i class="fas fa-terminal"></i> Sophisticated RCE Vectors</h3>
+                    <p>Advanced command injection and code execution techniques</p>
                     <ul class="test-steps">
-                        <li>Test file upload functionality</li>
-                        <li>Check input fields that might process server commands</li>
-                        <li>Verify file inclusion parameters</li>
+                        <li>Test for template injection vulnerabilities (SSTI)</li>
+                        <li>Check for deserialisation vulnerabilities</li>
+                        <li>Exploit XML external entity (XXE) injection</li>
+                        <li>Test for Node.js prototype pollution</li>
+                        <li>Check for Python pickle exploitation</li>
+                        <li>Attempt PHP object injection</li>
                     </ul>
                 </div>
+
                 <div class="checklist-item">
-                    <h3>Authentication Bypass</h3>
-                    <p>Test authentication mechanisms for bypass possibilities</p>
+                    <h3><i class="fas fa-key"></i> Authentication Chain Exploitation</h3>
+                    <p>Complex authentication bypass and chain exploitation techniques</p>
                     <ul class="test-steps">
-                        <li>Try parameter manipulation</li>
-                        <li>Test direct page access</li>
-                        <li>Check for logic flaws in authentication flow</li>
+                        <li>Test JWT token manipulation and exploitation</li>
+                        <li>Attempt OAuth 2.0 flow manipulation</li>
+                        <li>Check for race conditions in authentication</li>
+                        <li>Test for authentication bypass through SAML exploitation</li>
+                        <li>Exploit multi-factor authentication bypasses</li>
+                        <li>Test for session fixation vulnerabilities</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-network-wired"></i> Server-Side Request Forgery (SSRF)</h3>
+                    <p>Advanced SSRF exploitation techniques</p>
+                    <ul class="test-steps">
+                        <li>Test for blind SSRF using out-of-band techniques</li>
+                        <li>Exploit cloud metadata endpoints</li>
+                        <li>Test for SSRF through PDF generators</li>
+                        <li>Check for SSRF in API integrations</li>
+                        <li>Attempt SSRF through redirects</li>
+                        <li>Test for SSRF in file upload functionality</li>
                     </ul>
                 </div>
             </div>
@@ -238,22 +276,39 @@
             </div>
             <div class="checklist">
                 <div class="checklist-item">
-                    <h3>Cross-Site Scripting (XSS)</h3>
-                    <p>Test all input fields for XSS vulnerabilities</p>
+                    <h3><i class="fas fa-code"></i> Advanced XSS Vectors</h3>
+                    <p>Sophisticated cross-site scripting attack vectors</p>
                     <ul class="test-steps">
-                        <li>Test basic payloads (&lt;script&gt;alert(1)&lt;/script&gt;)</li>
-                        <li>Try event handlers (onmouseover, onclick)</li>
-                        <li>Check for DOM-based XSS</li>
-                        <li>Test HTML injection points</li>
+                        <li>Test for DOM clobbering vulnerabilities</li>
+                        <li>Exploit mutation XSS scenarios</li>
+                        <li>Test for polyglot XSS payloads</li>
+                        <li>Check for XSS in PDF/file generation</li>
+                        <li>Test for XSS through SVG uploads</li>
+                        <li>Exploit template literal injection</li>
                     </ul>
                 </div>
+
                 <div class="checklist-item">
-                    <h3>CSRF Vulnerabilities</h3>
-                    <p>Check for Cross-Site Request Forgery protections</p>
+                    <h3><i class="fas fa-random"></i> Race Conditions</h3>
+                    <p>Time-sensitive vulnerability testing</p>
                     <ul class="test-steps">
-                        <li>Verify CSRF token implementation</li>
-                        <li>Test token validation</li>
-                        <li>Check token presence in sensitive operations</li>
+                        <li>Test for race conditions in financial transactions</li>
+                        <li>Check for race conditions in file operations</li>
+                        <li>Exploit race conditions in status changes</li>
+                        <li>Test concurrent API requests</li>
+                        <li>Check for time-of-check to time-of-use issues</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-file-code"></i> File Upload Vulnerabilities</h3>
+                    <p>Advanced file upload exploitation techniques</p>
+                    <ul class="test-steps">
+                        <li>Test for null byte injection in filenames</li>
+                        <li>Attempt path traversal in upload directories</li>
+                        <li>Check for race conditions during upload</li>
+                        <li>Test metadata exploitation in uploads</li>
+                        <li>Exploit file content polyglots</li>
                     </ul>
                 </div>
             </div>
@@ -266,21 +321,38 @@
             </div>
             <div class="checklist">
                 <div class="checklist-item">
-                    <h3>Security Misconfigurations</h3>
-                    <p>Check for common security misconfigurations</p>
+                    <h3><i class="fas fa-cogs"></i> Advanced Configuration Testing</h3>
+                    <p>Complex security configuration analysis</p>
                     <ul class="test-steps">
-                        <li>Review HTTP security headers</li>
-                        <li>Check for sensitive information in source code</li>
-                        <li>Verify error handling messages</li>
+                        <li>Test for subdomain takeover vulnerabilities</li>
+                        <li>Check for vulnerable dependency configurations</li>
+                        <li>Test cloud storage misconfigurations</li>
+                        <li>Analyze Docker configuration security</li>
+                        <li>Check for vulnerable service configurations</li>
                     </ul>
                 </div>
+
                 <div class="checklist-item">
-                    <h3>Password Policy</h3>
-                    <p>Test password requirements and restrictions</p>
+                    <h3><i class="fas fa-user-shield"></i> Access Control Testing</h3>
+                    <p>Advanced authorization bypass techniques</p>
                     <ul class="test-steps">
-                        <li>Check minimum password length</li>
-                        <li>Test password complexity requirements</li>
-                        <li>Verify password change functionality</li>
+                        <li>Test for horizontal privilege escalation</li>
+                        <li>Check for IDOR vulnerabilities</li>
+                        <li>Test API endpoint access controls</li>
+                        <li>Verify role-based access control</li>
+                        <li>Check for permission hierarchy bypasses</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-exchange-alt"></i> Request Smuggling</h3>
+                    <p>HTTP request smuggling vulnerability testing</p>
+                    <ul class="test-steps">
+                        <li>Test for CL.TE vulnerabilities</li>
+                        <li>Check for TE.CL vulnerabilities</li>
+                        <li>Test for request smuggling via headers</li>
+                        <li>Check for HTTP/2 request smuggling</li>
+                        <li>Test for response queue poisoning</li>
                     </ul>
                 </div>
             </div>
@@ -293,21 +365,146 @@
             </div>
             <div class="checklist">
                 <div class="checklist-item">
-                    <h3>Information Disclosure</h3>
-                    <p>Look for unnecessary information disclosure</p>
+                    <h3><i class="fas fa-search"></i> Information Disclosure</h3>
+                    <p>Advanced information leakage testing</p>
                     <ul class="test-steps">
-                        <li>Check for version information</li>
-                        <li>Review HTML comments</li>
-                        <li>Inspect response headers</li>
+                        <li>Check for sensitive data in JavaScript source</li>
+                        <li>Test for enumeration vulnerabilities</li>
+                        <li>Check for exposed API documentation</li>
+                        <li>Test for sensitive data in error messages</li>
+                        <li>Check for information in HTTP responses</li>
                     </ul>
                 </div>
+
                 <div class="checklist-item">
-                    <h3>Cookie Attributes</h3>
-                    <p>Verify cookie security settings</p>
+                    <h3><i class="fas fa-cookie"></i> Advanced Cookie Analysis</h3>
+                    <p>Detailed cookie security testing</p>
                     <ul class="test-steps">
-                        <li>Check Secure flag</li>
-                        <li>Verify HttpOnly attribute</li>
-                        <li>Test SameSite attribute</li>
+                        <li>Test for cookie persistence vulnerabilities</li>
+                        <li>Check for cookie scope issues</li>
+                        <li>Test for cookie prefixing support</li>
+                        <li>Test for cookie encryption methods</li>
+                        <li>Check for cookie bombing vulnerabilities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="severity-section">
+            <div class="severity-header info">
+                <i class="fas fa-clipboard-check severity-icon"></i>
+                <h2 class="severity-title">Business Logic</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <h3><i class="fas fa-calculator"></i> Payment Flow Testing</h3>
+                    <p>Business logic vulnerabilities in payment processes</p>
+                    <ul class="test-steps">
+                        <li>Test for price manipulation vulnerabilities</li>
+                        <li>Check for currency conversion issues</li>
+                        <li>Test for discount/coupon abuse</li>
+                        <li>Verify payment flow sequence</li>
+                        <li>Check for cart manipulation vulnerabilities</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-user-friends"></i> Account Operations</h3>
+                    <p>Logic flaws in account management</p>
+                    <ul class="test-steps">
+                        <li>Test account creation/deletion flows</li>
+                        <li>Check for account merging vulnerabilities</li>
+                        <li>Test account recovery processes</li>
+                        <li>Verify email verification bypasses</li>
+                        <li>Check for invitation system abuse</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-shopping-cart"></i> Order Processing</h3>
+                    <p>Order flow and inventory vulnerabilities</p>
+                    <ul class="test-steps">
+                        <li>Test for order status manipulation</li>
+                        <li>Check for inventory race conditions</li>
+                        <li>Test shipping calculation bypass</li>
+                        <li>Verify order quantity limits</li>
+                        <li>Check for refund process abuse</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="severity-section">
+            <div class="severity-header info">
+                <i class="fas fa-shield-alt severity-icon"></i>
+                <h2 class="severity-title">API Security</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <h3><i class="fas fa-code"></i> GraphQL Testing</h3>
+                    <p>Advanced GraphQL security assessment</p>
+                    <ul class="test-steps">
+                        <li>Test for GraphQL injection</li>
+                        <li>Check for information disclosure in errors</li>
+                        <li>Test for nested query attacks</li>
+                        <li>Verify query depth limits</li>
+                        <li>Check for GraphQL introspection</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-project-diagram"></i> REST API Testing</h3>
+                    <p>REST endpoint security verification</p>
+                    <ul class="test-steps">
+                        <li>Test for parameter pollution</li>
+                        <li>Check for mass assignment</li>
+                        <li>Test for API versioning issues</li>
+                        <li>Verify rate limiting implementation</li>
+                        <li>Check for improper error handling</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-key"></i> API Authentication</h3>
+                    <p>API authentication security testing</p>
+                    <ul class="test-steps">
+                        <li>Test for token leakage</li>
+                        <li>Check for API key exposure</li>
+                        <li>Test OAuth implementation</li>
+                        <li>Verify JWT security</li>
+                        <li>Check for credential stuffing protection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="severity-section">
+            <div class="severity-header info">
+                <i class="fas fa-mobile-alt severity-icon"></i>
+                <h2 class="severity-title">Mobile API Integration</h2>
+            </div>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <h3><i class="fas fa-exchange-alt"></i> Mobile API Endpoints</h3>
+                    <p>Testing web-to-mobile API interactions</p>
+                    <ul class="test-steps">
+                        <li>Test for mobile API endpoint exposure</li>
+                        <li>Check for client certificate validation</li>
+                        <li>Test for platform-specific vulnerabilities</li>
+                        <li>Verify deep link handling</li>
+                        <li>Check for mobile token handling</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-item">
+                    <h3><i class="fas fa-sync"></i> Synchronization Issues</h3>
+                    <p>Data synchronization vulnerability testing</p>
+                    <ul class="test-steps">
+                        <li>Test for data sync race conditions</li>
+                        <li>Check for offline data exposure</li>
+                        <li>Test for sync token manipulation</li>
+                        <li>Verify conflict resolution security</li>
+                        <li>Check for cache poisoning</li>
                     </ul>
                 </div>
             </div>
