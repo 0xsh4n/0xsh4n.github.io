@@ -196,6 +196,23 @@
                 transform: translateY(0);
             }
         }
+         /* Footer Styles */
+        footer {
+            background: var(--nav-bg);
+            color: var(--text-primary);
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: 5rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -510,6 +527,19 @@
             </div>
         </div>
     </div>
+    <!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="social-icons">
+            <a href="https://x.com/mr_5han" class="social-icon"><i class="fab fa-x"></i></a>
+            <a href="https://instagram.com/ajmal._shann" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/0xsh4n" class="social-icon"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com/in/ajmalshan" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p>&copy; 2025 0xsh4n. All rights reserved.</p>
+    </div>
+</footer>
+
 
     <script>
         function toggleTheme() {
