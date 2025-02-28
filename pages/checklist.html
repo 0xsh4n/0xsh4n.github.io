@@ -248,27 +248,7 @@
                     isLoading: true
                 };
             },
-            mounted() {
-                mounted() {
-    // Fetch the checklist data from the JSON file
-    fetch('security-checklist.json')
-        .then(response => response.json())
-        .then(data => {
-            this.checklist = data;
-            
-            // Load all test categories by default
-            if (this.checklist.categories.length > 0) {
-                this.activeTab = this.checklist.categories[0].id;
-            }
-            
-            this.isLoading = false;
-        })
-        .catch(error => {
-            console.error('Error loading the checklist data:', error);
-        });
-}
-                // In a real application, you would fetch this from a JSON file
-                // For this example, we'll embed the data directly
+
     mounted() {
     // Fetch the checklist data from the JSON file
     fetch('bugs.json')
