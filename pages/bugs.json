@@ -1,0 +1,647 @@
+{
+  "categories": [
+    {
+      "id": "authentication",
+      "name": "Authentication Testing",
+      "tests": [
+        {
+          "name": "Brute Force Protection Bypass",
+          "severity": "Critical",
+          "platforms": ["web"],
+          "description": "Test if the application has proper protection against brute force attacks.",
+          "steps": [
+            "Set up Burp Suite to intercept login requests",
+            "Create a list of common passwords in Burp Intruder",
+            "Use Intruder's \"Sniper\" attack with a valid username and password list",
+            "Check if account lockout occurs after multiple failed attempts",
+            "If timeouts are implemented, check for race conditions by sending parallel requests"
+          ],
+          "burpSteps": [
+            "Capture a login request using Burp Proxy",
+            "Right-click and select \"Send to Intruder\"",
+            "In Intruder, go to the \"Positions\" tab and clear all payload positions",
+            "Add payload position markers around the password parameter value",
+            "Go to the \"Payloads\" tab and add common passwords to the payload list",
+            "Under \"Options\", enable \"Grep - Match\" and add patterns like \"Invalid credentials\" or \"Login failed\"",
+            "Start the attack and analyze results - look for different response lengths, status codes, or missing error messages",
+            "Check if you can identify successful login attempts or if account lockout occurs"
+          ],
+          "tools": ["Burp Suite (Intruder)", "OWASP ZAP"]
+        },
+        {
+          "name": "JWT Token Vulnerabilities",
+          "severity": "Critical",
+          "platforms": ["web", "api"],
+          "description": "Test for vulnerabilities in JWT implementation, including weak signature verification.",
+          "steps": [
+            "Intercept a request containing a JWT token",
+            "Decode the JWT token (jwt.io)",
+            "Try changing the algorithm to \"none\" (alg:none attack)",
+            "Try signature stripping and tampering with the claims",
+            "Check if the key is weak or predictable (look for 'kid' parameter)",
+            "Try brute-forcing the secret key if HMAC is used"
+          ],
+          "burpSteps": [
+            "Intercept a request containing a JWT token in Burp Proxy",
+            "Send the request to Repeater",
+            "Use the JSON Web Token extension in Burp (need to install from BApp Store)",
+            "Right-click on the JWT token and select \"Send to JWT Editor\"",
+            "In the JWT Editor, try changing the algorithm to \"none\" in the header and removing the signature",
+            "Modify the payload claims (e.g., change role from \"user\" to \"admin\")",
+            "Using the \"Attack\" feature to attempt common secret keys",
+            "Copy the modified token back to your Repeater request",
+            "Send the request and examine the response to see if the server accepts the tampered token"
+          ],
+          "tools": ["Burp Suite", "JWT_Tool", "jwt.io"]
+        },
+        {
+          "name": "Insecure Biometric Authentication",
+          "severity": "High",
+          "platforms": ["mobile"],
+          "description": "Test if biometric authentication is properly implemented and not bypassable.",
+          "steps": [
+            "Root/jailbreak the device (test environment only)",
+            "Use Frida to hook into the biometric authentication API",
+            "Check if the app accepts any biometric authentication result",
+            "Try bypassing the authentication by modifying return values",
+            "Check if there's a fallback mechanism that's weaker than biometrics"
+          ],
+          "burpSteps": [
+            "Configure a rooted/jailbroken device to use Burp Suite as a proxy",
+            "In Burp, capture the network traffic when biometric authentication is performed",
+            "Identify the endpoints responsible for biometric authentication verification",
+            "In Burp Repeater, modify the request parameters that indicate successful authentication",
+            "Look for parameters like \"authSuccess\", \"biometricVerified\", or JSON fields indicating verification status",
+            "Send the modified request with authentication status set to successful",
+            "Check if the application accepts the modified response and grants access",
+            "Also try bypassing the biometric check entirely by directly accessing endpoints that should be protected"
+          ],
+          "tools": ["Frida", "Objection", "MobSF", "Burp Suite"]
+        },
+        {
+          "name": "Windows Credential Storage",
+          "severity": "High",
+          "platforms": ["desktop"],
+          "description": "Test how credentials are stored and protected on the Windows client.",
+          "steps": [
+            "Check registry locations (HKCU\\Software\\) for stored credentials",
+            "Search for configuration files that might contain credentials",
+            "Use Process Monitor to track file access during authentication",
+            "Check Windows Credential Manager for stored credentials",
+            "Search for DPAPI usage and implementation vulnerabilities"
+          ],
+          "burpSteps": [
+            "Configure the Windows application to use Burp Suite as a proxy (may require additional tools like Proxifier)",
+            "In Burp, enable interception and capture all traffic during application login",
+            "Look for credentials being transmitted in plaintext or using weak encoding",
+            "Use Burp's \"Search\" function to find strings like \"password\", \"credentials\", or \"token\" in responses",
+            "Monitor all HTTP/HTTPS requests for sensitive information leakage",
+            "For thick clients, use Burp to intercept any API calls the application makes to backend services",
+            "Check for sensitive data in cookies, local storage, or other client-side storage that Burp can detect",
+            "Look for \"remember me\" functionality and analyze how credentials are stored locally"
+          ],
+          "tools": ["Process Monitor", "Mimikatz", "Registry Editor", "Burp Suite"]
+        },
+        {
+          "name": "Session Fixation",
+          "severity": "High",
+          "platforms": ["web", "api"],
+          "description": "Test if the application is vulnerable to session fixation attacks.",
+          "steps": [
+            "Obtain a session identifier before authentication",
+            "Log in to the application",
+            "Check if the same session identifier is still valid after authentication",
+            "If so, the application is vulnerable to session fixation"
+          ],
+          "burpSteps": [
+            "Browse to the application's login page in your browser with Burp Proxy enabled",
+            "Before logging in, note the session cookie values in Burp Proxy's \"HTTP history\" tab",
+            "Perform login with valid credentials",
+            "Check if the session cookie values changed after authentication",
+            "If they remain the same, try the following test:",
+            "Open a private/incognito browser window with Burp Proxy enabled",
+            "Visit the site to get a session cookie, but don't log in",
+            "Copy this pre-authentication session cookie value",
+            "In your original browser session where you're logged in, use Burp Proxy to intercept a request",
+            "Replace your authenticated session cookie with the unauthenticated one from the private window",
+            "Forward the request and check if you're still authenticated; if yes, the application is vulnerable"
+          ],
+          "tools": ["Burp Suite", "Browser dev tools"]
+        },
+        {
+          "name": "API Key Management",
+          "severity": "Critical",
+          "platforms": ["api"],
+          "description": "Test for proper API key management and protection.",
+          "steps": [
+            "Intercept API requests and identify API key placement (headers, URL parameters, etc.)",
+            "Test if API keys have proper access controls and rate limiting",
+            "Check if API keys are transmitted over secure channels (HTTPS)",
+            "Test if expired or revoked API keys are properly invalidated",
+            "Test if API keys have appropriate scopes and permissions"
+          ],
+          "burpSteps": [
+            "Capture API requests containing API keys in Burp Proxy",
+            "Identify where the API key is placed (header, URL parameter, request body)",
+            "Send the request to Repeater to test various scenarios:",
+            "Test for proper invalidation: Use a valid API key, revoke it, then try using it again",
+            "Test for rate limiting: Send the request to Intruder, configure a null payload, set high thread count to send concurrent requests, and look for 429 responses"
+          ],
+          "tools": ["Burp Suite", "Postman"]
+        }
+      ]
+    },
+    {
+      "id": "authorization",
+      "name": "Authorization Testing",
+      "tests": [
+        {
+          "name": "Insecure Direct Object References (IDOR)",
+          "severity": "Critical",
+          "platforms": ["web", "api"],
+          "description": "Test if the application properly validates access to objects based on user authorization.",
+          "steps": [
+            "Identify endpoints that access resources via identifiers (e.g., /api/users/123, /documents/456)",
+            "Log in with a legitimate user account",
+            "Access a resource belonging to that user",
+            "Modify the resource identifier to access another user's resource",
+            "Check if access is granted to the unauthorized resource",
+            "Try both sequential IDs and non-sequential identifiers (UUIDs, etc.)"
+          ],
+          "burpSteps": [
+            "Login to the application with a legitimate user account (User A)",
+            "Browse the application with Burp Proxy enabled to capture traffic",
+            "Identify requests that fetch user-specific resources (look for IDs in URLs, request parameters, or JSON bodies)",
+            "Send these requests to Repeater",
+            "Modify the resource identifiers (try sequential IDs, UUIDs, etc.) to attempt accessing another user's resources",
+            "Send the modified request and check if access is granted to unauthorized resources",
+            "For more thorough testing, use the Autorize extension to automatically test IDOR vulnerabilities"
+          ],
+          "tools": ["Burp Suite", "Autorize extension"]
+        },
+        {
+          "name": "Broken Function Level Authorization",
+          "severity": "Critical",
+          "platforms": ["web", "api"],
+          "description": "Test if administrative functions are accessible to non-admin users.",
+          "steps": [
+            "Map out all endpoints in the application including those for administrative functions",
+            "Log in with a non-administrative user",
+            "Try to access administrative endpoints directly",
+            "Check if hidden admin interfaces are accessible",
+            "Try changing HTTP methods (GET, POST, PUT, DELETE) for the same endpoint"
+          ],
+          "burpSteps": [
+            "Login as a regular (non-admin) user with Burp Proxy enabled",
+            "Browse the application to gather as many endpoints as possible",
+            "Use Burp's built-in crawler or the Content Discovery extension to find hidden endpoints",
+            "Look for potential administrative paths like /admin, /management, /console, etc.",
+            "Use Burp Intruder to enumerate potential admin endpoints",
+            "For any discovered endpoints, try accessing them with your non-admin session",
+            "Use Burp Repeater to test different HTTP methods on the same endpoint",
+            "Check browser developer tools for any hidden admin endpoints that might be commented out in the HTML/JavaScript"
+          ],
+          "tools": ["Burp Suite", "Postman", "Fuzz-faster-u-fool (ffuf)"]
+        },
+        {
+          "name": "Client-Side Authorization Bypass",
+          "severity": "High",
+          "platforms": ["mobile", "desktop"],
+          "description": "Test if authorization checks are implemented only on the client side and can be bypassed.",
+          "steps": [
+            "Decompile the application (APK for Android, IPA for iOS, or use a .NET decompiler for Windows)",
+            "Look for authorization checks in the client code",
+            "Use a proxy (like Burp) to intercept and modify requests",
+            "Identify and modify authorization-related parameters or headers",
+            "Try bypassing client-side authorization checks by directly calling backend APIs"
+          ],
+          "burpSteps": [
+            "Configure the mobile device or desktop application to route traffic through Burp Suite",
+            "Install Burp's CA certificate on the device/system to intercept HTTPS traffic",
+            "In Burp Proxy, enable interception and observe the traffic as you navigate through the application",
+            "Look for API calls that return user permissions, roles, or feature flags",
+            "Send these requests to Repeater and modify response values",
+            "Check if UI elements change based on client-side logic processing these responses",
+            "Try to directly access endpoints that should be restricted"
+          ],
+          "tools": ["Frida", "JADX", "ILSpy", "dnSpy", "MobSF", "Burp Suite"]
+        },
+        {
+          "name": "OAuth 2.0/OpenID Connect Vulnerabilities",
+          "severity": "Critical",
+          "platforms": ["api"],
+          "description": "Test for vulnerabilities in OAuth 2.0 or OpenID Connect implementations.",
+          "steps": [
+            "Check if the redirect_uri parameter is properly validated against a whitelist",
+            "Test for open redirectors that could be used to steal authorization codes",
+            "Check if the state parameter is implemented and validated to prevent CSRF",
+            "Test if authorization codes can be reused multiple times",
+            "Check if PKCE is implemented for mobile and SPA clients",
+            "Test for access token leakage in logs or browser history"
+          ],
+          "burpSteps": [
+            "Intercept the OAuth authorization flow with Burp Proxy",
+            "Identify the authorization request containing redirect_uri, client_id, and other parameters",
+            "Send this request to Repeater for testing redirect_uri validation",
+            "Test state parameter for CSRF protection",
+            "Test authorization code reuse with Burp Repeater"
+          ],
+          "tools": ["Burp Suite", "OWASP ZAP", "OAuth 2.0 Toolkit"]
+        },
+        {
+          "name": "Role-Based Access Control (RBAC) Bypass",
+          "severity": "High",
+          "platforms": ["web", "api"],
+          "description": "Test if RBAC implementation can be bypassed to perform unauthorized actions.",
+          "steps": [
+            "Map out different roles and their permissions in the application",
+            "Log in with a low-privilege account",
+            "Identify endpoints that should be restricted to higher-privileged roles",
+            "Try accessing these endpoints directly with the low-privilege token",
+            "Try modifying the role or permission claims in tokens (if JWTs are used)",
+            "Test if the application caches authorization decisions that can be exploited"
+          ],
+          "burpSteps": [
+            "Intercept authenticated requests with Burp Proxy to identify the JWT token",
+            "Install the JSON Web Token extension from the BApp Store if not already installed",
+            "Right-click on the JWT token and select \"Send to JSON Web Token\" to decode it",
+            "Analyze the payload claims, looking for role or permission identifiers",
+            "Modify the payload to elevate privileges",
+            "If the token is signed, try various attacks (None algorithm, Key confusion, Brute-force)",
+            "Send the modified token in a new request via Burp Repeater",
+            "Try accessing admin-only endpoints with the modified token",
+            "Check if role-specific UI elements or data become accessible"
+          ],
+          "tools": ["Burp Suite", "JWT Editor", "Autorize"]
+        }
+      ]
+    },
+    {
+      "id": "injection",
+      "name": "Injection Testing",
+      "tests": [
+        {
+          "name": "SQL Injection",
+          "severity": "Critical",
+          "platforms": ["web", "api", "mobile", "desktop"],
+          "description": "Test if user-supplied data is properly sanitized before being used in SQL queries.",
+          "steps": [
+            "Identify input fields that might interact with a database",
+            "Test common SQL injection payloads (quotes, comments, UNION statements)",
+            "Check for blind SQL injection using time delays or boolean conditions",
+            "Test for second-order SQL injection (stored and later executed)",
+            "Attempt to extract database schema information",
+            "Try to bypass WAF or input filters"
+          ],
+          "burpSteps": [
+            "Identify potential SQL injection points while browsing with Burp Proxy",
+            "Send suspicious requests to Intruder",
+            "Load SQL injection payloads from Burp's built-in lists or custom lists",
+            "Configure appropriate grep patterns to identify successful injections",
+            "For suspected blind SQL injections, use time-based payloads and monitor response times",
+            "For more advanced testing, use SQLmap via Burp extensions",
+            "Analyze responses for error messages, timing differences, or content variations"
+          ],
+          "tools": ["Burp Suite", "SQLmap", "OWASP ZAP"]
+        },
+        {
+          "name": "XSS (Cross-Site Scripting)",
+          "severity": "High",
+          "platforms": ["web", "mobile"],
+          "description": "Test if user input is properly sanitized before being rendered in the application.",
+          "steps": [
+            "Identify all input fields that reflect data back to the user",
+            "Test with basic XSS payloads (<script>alert(1)</script>)",
+            "Try bypassing filters with encoding, obfuscation, or alternative tags",
+            "Check for DOM-based XSS in client-side JavaScript",
+            "Test for stored XSS in user profiles, comments, etc.",
+            "Check if CSP is implemented and can be bypassed"
+          ],
+          "burpSteps": [
+            "Identify reflective points in the application using Burp Proxy",
+            "Send these requests to Burp Intruder",
+            "Load XSS payloads from Burp's payload lists",
+            "Configure grep patterns for successful XSS (e.g., 'alert', custom marker strings)",
+            "Use Burp's 'Match and Replace' to bypass WAF or filters",
+            "For DOM XSS, use Burp's DOM Invader extension",
+            "For stored XSS, track where input is stored and later retrieved/displayed"
+          ],
+          "tools": ["Burp Suite", "XSS Hunter", "DOM Invader"]
+        },
+        {
+          "name": "Command Injection",
+          "severity": "Critical",
+          "platforms": ["web", "api", "desktop"],
+          "description": "Test if user input is used unsafely in system command execution.",
+          "steps": [
+            "Identify functionality that might execute system commands (ping, traceroute, file operations)",
+            "Test command separator characters (;, &&, ||, |, etc.)",
+            "Try command substitution ($(), ``, etc.)",
+            "Use platform-specific techniques for Windows and Unix systems",
+            "Test for blind command injection using time delays or DNS lookups",
+            "Try to exfiltrate data using command output"
+          ],
+          "burpSteps": [
+            "Identify potential command injection points in requests",
+            "Send these requests to Burp Repeater",
+            "Test different command injection payloads, starting with simple ones like 'ping -c 5 127.0.0.1'",
+            "Use command separators to chain commands (e.g., '; id', '&& whoami')",
+            "For blind injection, use time delays (e.g., '; sleep 10;') and observe response times",
+            "Use out-of-band testing with Burp Collaborator to detect successful injections",
+            "For advanced testing, try to exfiltrate data via DNS or HTTP requests to Burp Collaborator"
+          ],
+          "tools": ["Burp Suite", "Commix"]
+        },
+        {
+          "name": "XXE (XML External Entity) Injection",
+          "severity": "Critical",
+          "platforms": ["web", "api"],
+          "description": "Test if XML parsers process external entity references unsafely.",
+          "steps": [
+            "Identify endpoints that accept XML input",
+            "Try including external entity references in XML payloads",
+            "Test for file disclosure using file:// protocol",
+            "Test for SSRF via http:// or https:// protocols",
+            "Try blind XXE using out-of-band techniques",
+            "Check for XML parameter entities if direct XXE is blocked"
+          ],
+          "burpSteps": [
+            "Identify requests that contain XML data or accept XML content types",
+            "Send these requests to Burp Repeater",
+            "Modify the XML to include DOCTYPE declaration with external entities",
+            "Test for file reading with payloads like: <!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///etc/passwd\"> ]>",
+            "Reference the entity in XML content and check if it's expanded in the response",
+            "For blind XXE, use Burp Collaborator with payloads that trigger out-of-band connections",
+            "If direct entity expansion is blocked, try using parameter entities or other bypass techniques"
+          ],
+          "tools": ["Burp Suite", "XXEinjector"]
+        },
+        {
+          "name": "Server-Side Request Forgery (SSRF)",
+          "severity": "High",
+          "platforms": ["web", "api"],
+          "description": "Test if the application makes server-side requests to arbitrary domains or internal resources.",
+          "steps": [
+            "Identify functionality that makes server-side requests (URL fetching, webhooks, integrations)",
+            "Try directing requests to internal IPs (127.0.0.1, 10.x.x.x, 172.16.x.x, 192.168.x.x)",
+            "Try non-HTTP protocols (file://, dict://, gopher://, etc.)",
+            "Test cloud metadata endpoints (169.254.169.254 for AWS)",
+            "Try bypassing filters with IP encoding, redirects, or DNS rebinding",
+            "Use out-of-band methods to detect successful SSRF"
+          ],
+          "burpSteps": [
+            "Identify parameters that might trigger server-side requests (URLs, webhooks, API endpoints)",
+            "Send these requests to Burp Repeater",
+            "Modify parameters to point to internal resources like 'http://127.0.0.1/'",
+            "Try accessing internal services (e.g., 'http://localhost:8080/admin')",
+            "If direct IP addresses are blocked, try bypass techniques:",
+            "DNS names that resolve to internal IPs",
+            "URL encoding, double URL encoding, or hex encoding",
+            "Redirects from allowed domains to internal destinations",
+            "For blind SSRF, use Burp Collaborator to detect connections"
+          ],
+          "tools": ["Burp Suite", "SSRFmap"]
+        }
+      ]
+    },
+    {
+      "id": "client-side",
+      "name": "Client-Side Testing",
+      "tests": [
+        {
+          "name": "Cross-Site Request Forgery (CSRF)",
+          "severity": "High",
+          "platforms": ["web"],
+          "description": "Test if the application is vulnerable to CSRF attacks.",
+          "steps": [
+            "Identify important state-changing functions (account changes, transfers, etc.)",
+            "Check if CSRF tokens are implemented",
+            "Test if CSRF tokens are properly validated (presence, value, per-session binding)",
+            "Check if tokens can be reused across sessions",
+            "Test if the application relies solely on cookies for authentication",
+            "Check if SameSite cookie attribute is used"
+          ],
+          "burpSteps": [
+            "Identify important state-changing requests in Burp Proxy",
+            "Check for CSRF tokens in these requests (form fields, headers, cookies)",
+            "Send the request to Burp Repeater",
+            "Try removing the CSRF token or using an invalid value",
+            "Check if the request is still accepted",
+            "For more thorough testing, use Burp's CSRF PoC generator:",
+            "Right-click on a request and select 'Engagement tools' > 'Generate CSRF PoC'",
+            "Test the generated PoC in a different browser session to see if the action executes"
+          ],
+          "tools": ["Burp Suite", "CSRF Tester"]
+        },
+        {
+          "name": "Client-Side Storage Vulnerabilities",
+          "severity": "Medium",
+          "platforms": ["web", "mobile", "desktop"],
+          "description": "Test if sensitive data is stored insecurely on the client side.",
+          "steps": [
+            "Check browser storage mechanisms (localStorage, sessionStorage, IndexedDB)",
+            "Inspect cookies for sensitive data and proper flags (Secure, HttpOnly, SameSite)",
+            "Look for sensitive data in client-side caches",
+            "Check if mobile apps store sensitive data in shared locations",
+            "Test if sensitive data persists after logout or session expiration",
+            "Check if desktop applications store credentials in registry or config files"
+          ],
+          "burpSteps": [
+            "Use Burp Proxy's browser to navigate through the application",
+            "Inspect the 'Cookies' tab in Burp Proxy for sensitive data and missing security flags",
+            "Use browser dev tools alongside Burp to examine localStorage and sessionStorage",
+            "Perform sensitive operations (login, payments) and check what data is stored client-side",
+            "For mobile apps, configure Burp to intercept traffic and check for sensitive data in responses",
+            "Logout and check if sensitive data is properly cleared from client storage"
+          ],
+          "tools": ["Burp Suite", "Browser Dev Tools", "Mobile Security Framework"]
+        },
+        {
+          "name": "Cross-Origin Resource Sharing (CORS) Misconfiguration",
+          "severity": "High",
+          "platforms": ["web", "api"],
+          "description": "Test if CORS is configured securely to prevent unauthorized cross-origin data access.",
+          "steps": [
+            "Check Access-Control-Allow-Origin headers in responses",
+            "Test if the application reflects origins in Allow-Origin headers",
+            "Check if sensitive endpoints use proper CORS restrictions",
+            "Test if wildcards (*) are used for Allow-Origin in sensitive contexts",
+            "Check if Allow-Credentials is true with permissive Allow-Origin",
+            "Test pre-flight request handling for unsafe methods"
+          ],
+          "burpSteps": [
+            "Browse the application with Burp Proxy enabled",
+            "Look for Access-Control-Allow-Origin headers in responses",
+            "Send interesting requests to Burp Repeater",
+            "Add or modify the Origin header with various values:",
+            "Malicious domains (e.g., 'Origin: https://evil.com')",
+            "Subdomains of trusted domains (e.g., 'Origin: https://attacker.trusted-site.com')",
+            "Variations with different protocols, ports, or path prefixes",
+            "Check if the response includes 'Access-Control-Allow-Origin: [your origin]'",
+            "If 'Access-Control-Allow-Credentials: true' is present with a permissive Allow-Origin, the site is vulnerable"
+          ],
+          "tools": ["Burp Suite", "CORS Tester"]
+        },
+        {
+          "name": "HTML5 Security Features",
+          "severity": "Medium",
+          "platforms": ["web"],
+          "description": "Test if HTML5 security features are properly implemented.",
+          "steps": [
+            "Check Content Security Policy (CSP) implementation and bypasses",
+            "Test Subresource Integrity (SRI) for external scripts and styles",
+            "Check iframe security with X-Frame-Options and CSP frame-ancestors",
+            "Test for Clickjacking vulnerabilities",
+            "Check implementation of Feature Policy/Permissions Policy",
+            "Test PostMessage security between frames/windows"
+          ],
+          "burpSteps": [
+            "Browse the application with Burp Proxy enabled",
+            "Check for security headers in responses (Content-Security-Policy, X-Frame-Options, etc.)",
+            "Analyze Content Security Policy directives for weaknesses",
+            "Look for 'unsafe-inline', 'unsafe-eval', or overly permissive sources",
+            "Test CSP bypass techniques using Burp Repeater to inject payloads",
+            "For Clickjacking, use Burp to generate a PoC:",
+            "Right-click a request and select 'Engagement tools' > 'Generate clickjacking PoC'",
+            "Test the generated PoC to see if the page can be framed"
+          ],
+          "tools": ["Burp Suite", "CSP Evaluator", "Clickjacking Tester"]
+        }
+      ]
+    },
+    {
+      "id": "server-side",
+      "name": "Server-Side Testing",
+      "tests": [
+        {
+          "name": "Insecure Deserialization",
+          "severity": "Critical",
+          "platforms": ["web", "api", "mobile", "desktop"],
+          "description": "Test if the application deserializes user-controlled data unsafely.",
+          "steps": [
+            "Identify serialized data in requests or responses (look for Base64, JSON, XML patterns)",
+            "Check for known serialization formats (Java, PHP, .NET, Python pickle, etc.)",
+            "Try modifying serialized objects and observe application behavior",
+            "Test for RCE using language-specific serialization exploits",
+            "Check if known vulnerable libraries are used for deserialization",
+            "Test both in transit and at rest serialized data"
+          ],
+          "burpSteps": [
+            "In Burp Proxy, look for serialized data in requests (often Base64-encoded strings or structured data)",
+            "Common locations include cookies, hidden form fields, or request bodies",
+            "Send suspicious requests to Burp Decoder to decode Base64 or other encodings",
+            "Try to identify the serialization format based on patterns",
+            "Send the request to Repeater and modify the serialized data",
+            "For known formats like Java, use the Java Deserialization Scanner Burp extension",
+            "For advanced testing, generate malicious serialized objects with tools like ysoserial",
+            "Encode the payload and insert it back into the request using Burp Repeater"
+          ],
+          "tools": ["Burp Suite", "ysoserial", "PHPGGC"]
+        },
+        {
+          "name": "Server-Side Template Injection (SSTI)",
+          "severity": "Critical",
+          "platforms": ["web", "api"],
+          "description": "Test if user input is unsafely used in server-side template rendering.",
+          "steps": [
+            "Identify potential template injection points (rendered user input, custom error messages)",
+            "Test for basic template expressions ({{7*7}}, ${7*7}, etc.)",
+            "Identify the template engine based on behavior or error messages",
+            "Use engine-specific payloads for more complex tests",
+            "Attempt to achieve RCE through template language features",
+            "Test for blind SSTI using out-of-band techniques"
+          ],
+          "burpSteps": [
+            "Identify parameters that might be passed directly to templates",
+            "Send these requests to Burp Repeater",
+            "Test basic probing payloads like {{7*7}}, ${7*7}, #{7*7}, or <%=7*7%>",
+            "Look for responses containing 49, which indicates potential template evaluation",
+            "If successful, identify the template engine from error messages or behavior",
+            "Use engine-specific payloads for deeper testing",
+            "For blind SSTI, use time delays or Burp Collaborator for out-of-band detection",
+            "Once the engine is identified, try more complex payloads to achieve command execution"
+          ],
+          "tools": ["Burp Suite", "Tplmap"]
+        },
+        {
+          "name": "File Upload Vulnerabilities",
+          "severity": "Critical",
+          "platforms": ["web", "api"],
+          "description": "Test if file upload functionality allows dangerous file types or execution.",
+          "steps": [
+            "Test uploading malicious file types (PHP, JSP, ASP, etc.)",
+            "Try bypassing file type restrictions (MIME type spoofing, extension tricks)",
+            "Check for path traversal in upload destinations",
+            "Test if uploaded files can be executed",
+            "Check for race conditions in upload validation",
+            "Test for ZIP bombs or DoS vectors"
+          ],
+          "burpSteps": [
+            "Capture file upload requests in Burp Proxy",
+            "Send the upload request to Burp Repeater",
+            "Modify the filename, content-type, and file contents to bypass restrictions:",
+            "Change extension (e.g., shell.php.jpg or shell.php%00.jpg)",
+            "Modify the Content-Type header to a allowed type",
+            "Use different letter casing (e.g., .pHp instead of .php)",
+            "Try special characters in filenames to bypass filters",
+            "Test for double extensions (file.php.png)",
+            "Look for successful uploads and test if the files can be accessed/executed",
+            "If upload location is known, try navigating to the uploaded file in the browser",
+            "For zip file uploads, test for zip slip vulnerabilities by creating archives with path traversal filenames"
+          ],
+          "tools": ["Burp Suite", "Upload Scanner extension"]
+        },
+        {
+          "name": "Mass Assignment / Excessive Data Exposure",
+          "severity": "High",
+          "platforms": ["web", "api", "mobile"],
+          "description": "Test if the application allows updating or viewing fields that should be protected.",
+          "steps": [
+            "Identify API endpoints that process user data (profile updates, object creation)",
+            "Map out all fields that the API accepts and stores",
+            "Try adding privileged fields that shouldn't be modifiable (isAdmin, role, permissions)",
+            "Test for insecure direct object references in API responses",
+            "Check if API responses contain excessive sensitive data",
+            "Test if the API implements proper field filtering for different user roles"
+          ],
+          "burpSteps": [
+            "Capture API requests for data modification operations in Burp Proxy",
+            "Send these requests to Burp Repeater",
+            "Add additional parameters that might be processed server-side but not expected in the UI:",
+            "Add admin fields like 'isAdmin': true or 'role': 'administrator'",
+            "Add financial fields like 'balance': 999999 or 'verified': true",
+            "Check if the server accepts and processes these additional fields",
+            "For data exposure testing, examine API responses for sensitive fields",
+            "Compare responses for different user roles to see if proper field filtering is applied"
+          ],
+          "tools": ["Burp Suite", "Postman"]
+        },
+        {
+          "name": "Improper Error Handling",
+          "severity": "Medium",
+          "platforms": ["web", "api", "mobile", "desktop"],
+          "description": "Test if the application exposes sensitive information in error messages.",
+          "steps": [
+            "Trigger various error conditions (invalid input, resource not found, etc.)",
+            "Check for detailed error messages that expose internals",
+            "Look for stack traces, SQL errors, or file paths in responses",
+            "Test for information disclosure in custom error pages",
+            "Check HTTP error codes and corresponding error responses",
+            "Test error handling in production vs. development environments"
+          ],
+          "burpSteps": [
+            "Use Burp Proxy to capture normal application traffic",
+            "Send interesting requests to Intruder",
+            "Configure payloads designed to trigger errors (SQL injection, XSS, invalid parameters)",
+            "Examine responses for detailed error messages, stack traces, or system paths",
+            "Look for database errors that might reveal schema details",
+            "Search for sensitive information in error responses using Burp's 'Search' function",
+            "Try adding invalid parameters or exceptionally long values to trigger errors",
+            "Check both HTTP response bodies and headers for information leakage"
+          ],
+          "tools": ["Burp Suite", "Error Message Checker extension"]
+        }
+      ]
+    }
+  ]
+}
