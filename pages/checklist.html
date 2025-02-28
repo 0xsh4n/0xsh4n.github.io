@@ -1,556 +1,451 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Web Penetration Testing Checklist | 50+ Vulnerabilities</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Advanced Security Testing Checklist by 0xsh4n</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
-
-        :root[data-theme="light"] {
-            --bg-primary: #f5f5f5;
-            --bg-secondary: #ffffff;
-            --text-primary: #333333;
-            --text-secondary: #666666;
-            --accent: #ff6b00;
-            --accent-hover: #ff8533;
-            --card-bg: #ffffff;
-            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --nav-bg: rgba(255, 255, 255, 0.95);
-            --critical: #dc3545;
-            --high: #fd7e14;
-            --medium: #ffc107;
-            --low: #28a745;
-            --info: #17a2b8;
+        .severity-critical {
+            background-color: #F87171;
         }
-
-        :root[data-theme="dark"] {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --accent: #ff6b00;
-            --accent-hover: #ff8533;
-            --card-bg: #2d2d2d;
-            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            --nav-bg: rgba(26, 26, 26, 0.95);
-            --critical: #ff4d5e;
-            --high: #ff934d;
-            --medium: #ffce3d;
-            --low: #34ce57;
-            --info: #3fc1d0;
+        .severity-high {
+            background-color: #FBBF24;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Ubuntu', sans-serif;
+        .severity-medium {
+            background-color: #FBBF24;
+            opacity: 0.7;
         }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
+        .severity-low {
+            background-color: #34D399;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .platform-pill {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.25rem;
+            margin-bottom: 0.25rem;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInUp 0.8s ease-out;
+        .platform-web { background-color: #93C5FD; }
+        .platform-api { background-color: #C4B5FD; }
+        .platform-mobile { background-color: #FCA5A5; }
+        .platform-desktop { background-color: #6EE7B7; }
+        
+        .tab-active {
+            border-bottom: 3px solid #3B82F6;
+            color: #1E40AF;
+            font-weight: 500;
         }
-
-        .header h1 {
-            color: var(--accent);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        .test-item-container {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.3s ease-out;
         }
-
-        .header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
+        .test-item-container.expanded {
+            height: auto;
         }
-
-        .severity-section {
-            margin-bottom: 3rem;
-            animation: fadeInUp 0.8s ease-out;
+        .test-item-header:hover {
+            background-color: #F3F4F6;
         }
-
-        .severity-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            border-radius: 8px;
-            background: var(--card-bg);
-            box-shadow: var(--card-shadow);
-        }
-
-        .severity-icon {
-            font-size: 1.5rem;
-        }
-
-        .critical .severity-icon {
-            color: var(--critical);
-        }
-
-        .high .severity-icon {
-            color: var(--high);
-        }
-
-        .medium .severity-icon {
-            color: var(--medium);
-        }
-
-        .low .severity-icon {
-            color: var(--low);
-        }
-
-        .info .severity-icon {
-            color: var(--info);
-        }
-
-        .severity-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .checklist {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .checklist-item {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--text-secondary);
-        }
-
-        .checklist-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .checklist-item h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .checklist-item p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .test-steps {
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
-            color: var(--text-secondary);
-        }
-
-        .test-steps li {
-            margin-bottom: 0.5rem;
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 0.5rem;
-            z-index: 1000;
-        }
-
-        .reference {
-            font-size: 0.9rem;
-            color: var(--info);
-            margin-top: 0.5rem;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-         /* Footer Styles */
-        footer {
-            background: var(--nav-bg);
-            color: var(--text-primary);
-            padding: 2rem 1rem;
-            text-align: center;
-            margin-top: 5rem;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        footer .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+        [v-cloak] { display: none; }
     </style>
 </head>
-<body>
-    <button class="theme-toggle" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-    </button>
-
-    <div class="container">
-        <div class="header">
-            <h1>Advanced Web Penetration Testing Checklist</h1>
-            <p>Comprehensive security assessment guide covering 50+ vulnerabilities</p>
-        </div>
-
-        <div class="severity-section">
-            <div class="severity-header critical">
-                <i class="fas fa-radiation-alt severity-icon"></i>
-                <h2 class="severity-title">Critical Severity</h2>
+<body class="bg-gray-50">
+    <div id="app" v-cloak>
+        <header class="bg-blue-900 text-white py-8 px-4">
+            <div class="container mx-auto">
+                <h1 class="text-3xl font-bold mb-2">Advanced Security Testing Checklist by 0xsh4n</h1>
+                <p class="text-xl">Comprehensive manual testing guide for Web, API, Mobile, and Desktop applications</p>
             </div>
-            <div class="checklist">
-                <div class="checklist-item">
-                    <h3><i class="fas fa-bug"></i> Advanced SQL Injection Vectors</h3>
-                    <p>Complex SQL injection techniques and advanced exploitation methods</p>
-                    <ul class="test-steps">
-                        <li>Test for stacked queries using semicolon (;)</li>
-                        <li>Attempt blind SQL injection with conditional responses</li>
-                        <li>Test for Out-of-band SQL injection (DNS/HTTP requests)</li>
-                        <li>Exploit second-order SQL injection scenarios</li>
-                        <li>Test for SQL injection in JSON/XML parameters</li>
-                        <li>Attempt SQLi through HTTP headers (User-Agent, Referer)</li>
-                    </ul>
-                </div>
+        </header>
 
-                <div class="checklist-item">
-                    <h3><i class="fas fa-terminal"></i> Sophisticated RCE Vectors</h3>
-                    <p>Advanced command injection and code execution techniques</p>
-                    <ul class="test-steps">
-                        <li>Test for template injection vulnerabilities (SSTI)</li>
-                        <li>Check for deserialisation vulnerabilities</li>
-                        <li>Exploit XML external entity (XXE) injection</li>
-                        <li>Test for Node.js prototype pollution</li>
-                        <li>Check for Python pickle exploitation</li>
-                        <li>Attempt PHP object injection</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-key"></i> Authentication Chain Exploitation</h3>
-                    <p>Complex authentication bypass and chain exploitation techniques</p>
-                    <ul class="test-steps">
-                        <li>Test JWT token manipulation and exploitation</li>
-                        <li>Attempt OAuth 2.0 flow manipulation</li>
-                        <li>Check for race conditions in authentication</li>
-                        <li>Test for authentication bypass through SAML exploitation</li>
-                        <li>Exploit multi-factor authentication bypasses</li>
-                        <li>Test for session fixation vulnerabilities</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-network-wired"></i> Server-Side Request Forgery (SSRF)</h3>
-                    <p>Advanced SSRF exploitation techniques</p>
-                    <ul class="test-steps">
-                        <li>Test for blind SSRF using out-of-band techniques</li>
-                        <li>Exploit cloud metadata endpoints</li>
-                        <li>Test for SSRF through PDF generators</li>
-                        <li>Check for SSRF in API integrations</li>
-                        <li>Attempt SSRF through redirects</li>
-                        <li>Test for SSRF in file upload functionality</li>
-                    </ul>
-                </div>
+        <div class="container mx-auto px-4 py-6">
+            <!-- Search and filter -->
+            <div class="mb-6">
+                <input 
+                    type="text" 
+                    v-model="searchQuery" 
+                    placeholder="Search for test cases..." 
+                    class="w-full p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
             </div>
-        </div>
 
-        <div class="severity-section">
-            <div class="severity-header high">
-                <i class="fas fa-exclamation-triangle severity-icon"></i>
-                <h2 class="severity-title">High Severity</h2>
+            <!-- Platform filter -->
+            <div class="mb-6 flex flex-wrap gap-2">
+                <button 
+                    @click="selectedPlatform = 'all'" 
+                    :class="[
+                        'px-3 py-1 rounded border',
+                        selectedPlatform === 'all' ? 'bg-blue-500 text-white border-blue-600' : 'bg-white border-gray-300'
+                    ]"
+                >All Platforms</button>
+                <button 
+                    @click="selectedPlatform = 'web'" 
+                    :class="[
+                        'px-3 py-1 rounded border',
+                        selectedPlatform === 'web' ? 'bg-blue-500 text-white border-blue-600' : 'bg-white border-gray-300'
+                    ]"
+                >Web</button>
+                <button 
+                    @click="selectedPlatform = 'api'" 
+                    :class="[
+                        'px-3 py-1 rounded border',
+                        selectedPlatform === 'api' ? 'bg-blue-500 text-white border-blue-600' : 'bg-white border-gray-300'
+                    ]"
+                >API</button>
+                <button 
+                    @click="selectedPlatform = 'mobile'" 
+                    :class="[
+                        'px-3 py-1 rounded border',
+                        selectedPlatform === 'mobile' ? 'bg-blue-500 text-white border-blue-600' : 'bg-white border-gray-300'
+                    ]"
+                >Mobile (iOS/Android)</button>
+                <button 
+                    @click="selectedPlatform = 'desktop'" 
+                    :class="[
+                        'px-3 py-1 rounded border',
+                        selectedPlatform === 'desktop' ? 'bg-blue-500 text-white border-blue-600' : 'bg-white border-gray-300'
+                    ]"
+                >Desktop (Windows)</button>
             </div>
-            <div class="checklist">
-                <div class="checklist-item">
-                    <h3><i class="fas fa-code"></i> Advanced XSS Vectors</h3>
-                    <p>Sophisticated cross-site scripting attack vectors</p>
-                    <ul class="test-steps">
-                        <li>Test for DOM clobbering vulnerabilities</li>
-                        <li>Exploit mutation XSS scenarios</li>
-                        <li>Test for polyglot XSS payloads</li>
-                        <li>Check for XSS in PDF/file generation</li>
-                        <li>Test for XSS through SVG uploads</li>
-                        <li>Exploit template literal injection</li>
-                    </ul>
-                </div>
 
-                <div class="checklist-item">
-                    <h3><i class="fas fa-random"></i> Race Conditions</h3>
-                    <p>Time-sensitive vulnerability testing</p>
-                    <ul class="test-steps">
-                        <li>Test for race conditions in financial transactions</li>
-                        <li>Check for race conditions in file operations</li>
-                        <li>Exploit race conditions in status changes</li>
-                        <li>Test concurrent API requests</li>
-                        <li>Check for time-of-check to time-of-use issues</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-file-code"></i> File Upload Vulnerabilities</h3>
-                    <p>Advanced file upload exploitation techniques</p>
-                    <ul class="test-steps">
-                        <li>Test for null byte injection in filenames</li>
-                        <li>Attempt path traversal in upload directories</li>
-                        <li>Check for race conditions during upload</li>
-                        <li>Test metadata exploitation in uploads</li>
-                        <li>Exploit file content polyglots</li>
-                    </ul>
+            <!-- Tabs -->
+            <div class="mb-6 border-b border-gray-200">
+                <div class="flex overflow-x-auto">
+                    <button 
+                        v-for="category in checklist.categories" 
+                        :key="category.id"
+                        @click="activeTab = category.id"
+                        :class="[
+                            'px-4 py-2 whitespace-nowrap',
+                            activeTab === category.id ? 'tab-active' : 'text-gray-500 hover:text-gray-700'
+                        ]"
+                    >
+                        {{ category.name }}
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="severity-section">
-            <div class="severity-header medium">
-                <i class="fas fa-exclamation-circle severity-icon"></i>
-                <h2 class="severity-title">Medium Severity</h2>
-            </div>
-            <div class="checklist">
-                <div class="checklist-item">
-                    <h3><i class="fas fa-cogs"></i> Advanced Configuration Testing</h3>
-                    <p>Complex security configuration analysis</p>
-                    <ul class="test-steps">
-                        <li>Test for subdomain takeover vulnerabilities</li>
-                        <li>Check for vulnerable dependency configurations</li>
-                        <li>Test cloud storage misconfigurations</li>
-                        <li>Analyze Docker configuration security</li>
-                        <li>Check for vulnerable service configurations</li>
-                    </ul>
+            <!-- Tab content -->
+            <div v-for="category in checklist.categories" :key="category.id" v-show="activeTab === category.id">
+                <h2 class="text-2xl font-bold mb-4">{{ category.name }}</h2>
+                
+                <div v-for="(test, index) in filteredTests(category.tests)" :key="index" class="mb-4">
+                    <div class="border border-gray-200 rounded-lg shadow-sm bg-white overflow-hidden">
+                        <!-- Test Header -->
+                        <div 
+                            class="test-item-header flex justify-between items-center p-4 cursor-pointer"
+                            @click="toggleExpandTest(test.name)"
+                        >
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="text-lg font-medium">{{ test.name }}</h3>
+                                    <div 
+                                        :class="[
+                                            'ml-2 text-xs text-white font-medium py-1 px-2 rounded',
+                                            'severity-' + test.severity.toLowerCase()
+                                        ]"
+                                    >
+                                        {{ test.severity }}
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+                                    <span 
+                                        v-for="platform in test.platforms" 
+                                        :key="platform"
+                                        :class="['platform-pill', 'platform-' + platform]"
+                                    >
+                                        {{ platformDisplay(platform) }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <svg 
+                                    :class="[
+                                        'w-6 h-6 transform transition-transform',
+                                        expandedTests.includes(test.name) ? 'rotate-180' : ''
+                                    ]"
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    fill="none" 
+                                    viewBox="0 0 24 24" 
+                                    stroke="currentColor"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Test Details -->
+                        <div 
+                            class="test-item-container border-t border-gray-200"
+                            :class="{ 'expanded': expandedTests.includes(test.name) }"
+                        >
+                            <div class="p-4">
+                                <p class="mb-4 text-gray-700">{{ test.description }}</p>
+                                
+                                <div class="mb-4">
+                                    <h4 class="font-medium text-blue-800 mb-2">General Testing Steps:</h4>
+                                    <ol class="list-decimal ml-5 space-y-1">
+                                        <li v-for="(step, stepIndex) in test.steps" :key="stepIndex">
+                                            {{ step }}
+                                        </li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h4 class="font-medium text-blue-800 mb-2">Burp Suite Steps:</h4>
+                                    <ol class="list-decimal ml-5 space-y-1">
+                                        <li v-for="(step, stepIndex) in test.burpSteps" :key="stepIndex">
+                                            {{ step }}
+                                        </li>
+                                    </ol>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="font-medium text-blue-800 mb-2">Recommended Tools:</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span 
+                                            v-for="(tool, toolIndex) in test.tools" 
+                                            :key="toolIndex"
+                                            class="bg-gray-100 rounded-full px-3 py-1 text-sm"
+                                        >
+                                            {{ tool }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-user-shield"></i> Access Control Testing</h3>
-                    <p>Advanced authorization bypass techniques</p>
-                    <ul class="test-steps">
-                        <li>Test for horizontal privilege escalation</li>
-                        <li>Check for IDOR vulnerabilities</li>
-                        <li>Test API endpoint access controls</li>
-                        <li>Verify role-based access control</li>
-                        <li>Check for permission hierarchy bypasses</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-exchange-alt"></i> Request Smuggling</h3>
-                    <p>HTTP request smuggling vulnerability testing</p>
-                    <ul class="test-steps">
-                        <li>Test for CL.TE vulnerabilities</li>
-                        <li>Check for TE.CL vulnerabilities</li>
-                        <li>Test for request smuggling via headers</li>
-                        <li>Check for HTTP/2 request smuggling</li>
-                        <li>Test for response queue poisoning</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="severity-section">
-            <div class="severity-header low">
-                <i class="fas fa-info-circle severity-icon"></i>
-                <h2 class="severity-title">Low Severity</h2>
-            </div>
-            <div class="checklist">
-                <div class="checklist-item">
-                    <h3><i class="fas fa-search"></i> Information Disclosure</h3>
-                    <p>Advanced information leakage testing</p>
-                    <ul class="test-steps">
-                        <li>Check for sensitive data in JavaScript source</li>
-                        <li>Test for enumeration vulnerabilities</li>
-                        <li>Check for exposed API documentation</li>
-                        <li>Test for sensitive data in error messages</li>
-                        <li>Check for information in HTTP responses</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-cookie"></i> Advanced Cookie Analysis</h3>
-                    <p>Detailed cookie security testing</p>
-                    <ul class="test-steps">
-                        <li>Test for cookie persistence vulnerabilities</li>
-                        <li>Check for cookie scope issues</li>
-                        <li>Test for cookie prefixing support</li>
-                        <li>Test for cookie encryption methods</li>
-                        <li>Check for cookie bombing vulnerabilities</li>
-                    </ul>
+                
+                <div v-if="filteredTests(category.tests).length === 0" class="text-center py-10">
+                    <p class="text-gray-500">No test cases match your search criteria.</p>
                 </div>
             </div>
         </div>
 
-        <div class="severity-section">
-            <div class="severity-header info">
-                <i class="fas fa-clipboard-check severity-icon"></i>
-                <h2 class="severity-title">Business Logic</h2>
+        <footer class="bg-gray-800 text-white py-6 px-4 mt-10">
+            <div class="container mx-auto">
+                <p class="text-center">Advanced Security Testing Checklist for Manual Testing with Burp Suite and other tools</p>
             </div>
-            <div class="checklist">
-                <div class="checklist-item">
-                    <h3><i class="fas fa-calculator"></i> Payment Flow Testing</h3>
-                    <p>Business logic vulnerabilities in payment processes</p>
-                    <ul class="test-steps">
-                        <li>Test for price manipulation vulnerabilities</li>
-                        <li>Check for currency conversion issues</li>
-                        <li>Test for discount/coupon abuse</li>
-                        <li>Verify payment flow sequence</li>
-                        <li>Check for cart manipulation vulnerabilities</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-user-friends"></i> Account Operations</h3>
-                    <p>Logic flaws in account management</p>
-                    <ul class="test-steps">
-                        <li>Test account creation/deletion flows</li>
-                        <li>Check for account merging vulnerabilities</li>
-                        <li>Test account recovery processes</li>
-                        <li>Verify email verification bypasses</li>
-                        <li>Check for invitation system abuse</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-shopping-cart"></i> Order Processing</h3>
-                    <p>Order flow and inventory vulnerabilities</p>
-                    <ul class="test-steps">
-                        <li>Test for order status manipulation</li>
-                        <li>Check for inventory race conditions</li>
-                        <li>Test shipping calculation bypass</li>
-                        <li>Verify order quantity limits</li>
-                        <li>Check for refund process abuse</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="severity-section">
-            <div class="severity-header info">
-                <i class="fas fa-shield-alt severity-icon"></i>
-                <h2 class="severity-title">API Security</h2>
-            </div>
-            <div class="checklist">
-                <div class="checklist-item">
-                    <h3><i class="fas fa-code"></i> GraphQL Testing</h3>
-                    <p>Advanced GraphQL security assessment</p>
-                    <ul class="test-steps">
-                        <li>Test for GraphQL injection</li>
-                        <li>Check for information disclosure in errors</li>
-                        <li>Test for nested query attacks</li>
-                        <li>Verify query depth limits</li>
-                        <li>Check for GraphQL introspection</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-project-diagram"></i> REST API Testing</h3>
-                    <p>REST endpoint security verification</p>
-                    <ul class="test-steps">
-                        <li>Test for parameter pollution</li>
-                        <li>Check for mass assignment</li>
-                        <li>Test for API versioning issues</li>
-                        <li>Verify rate limiting implementation</li>
-                        <li>Check for improper error handling</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-key"></i> API Authentication</h3>
-                    <p>API authentication security testing</p>
-                    <ul class="test-steps">
-                        <li>Test for token leakage</li>
-                        <li>Check for API key exposure</li>
-                        <li>Test OAuth implementation</li>
-                        <li>Verify JWT security</li>
-                        <li>Check for credential stuffing protection</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="severity-section">
-            <div class="severity-header info">
-                <i class="fas fa-mobile-alt severity-icon"></i>
-                <h2 class="severity-title">Mobile API Integration</h2>
-            </div>
-            <div class="checklist">
-                <div class="checklist-item">
-                    <h3><i class="fas fa-exchange-alt"></i> Mobile API Endpoints</h3>
-                    <p>Testing web-to-mobile API interactions</p>
-                    <ul class="test-steps">
-                        <li>Test for mobile API endpoint exposure</li>
-                        <li>Check for client certificate validation</li>
-                        <li>Test for platform-specific vulnerabilities</li>
-                        <li>Verify deep link handling</li>
-                        <li>Check for mobile token handling</li>
-                    </ul>
-                </div>
-
-                <div class="checklist-item">
-                    <h3><i class="fas fa-sync"></i> Synchronization Issues</h3>
-                    <p>Data synchronization vulnerability testing</p>
-                    <ul class="test-steps">
-                        <li>Test for data sync race conditions</li>
-                        <li>Check for offline data exposure</li>
-                        <li>Test for sync token manipulation</li>
-                        <li>Verify conflict resolution security</li>
-                        <li>Check for cache poisoning</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        </footer>
     </div>
-    <!-- Footer -->
-<footer>
-    <div class="footer-content">
-        <div class="social-icons">
-            <a href="https://x.com/mr_5han" class="social-icon"><i class="fab fa-x"></i></a>
-            <a href="https://instagram.com/ajmal._shann" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="https://github.com/0xsh4n" class="social-icon"><i class="fab fa-github"></i></a>
-            <a href="https://linkedin.com/in/ajmalshan" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-        <p>&copy; 2025 0xsh4n. All rights reserved.</p>
-    </div>
-</footer>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.31/vue.global.prod.js"></script>
     <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', newTheme);
-            
-            const themeIcon = document.querySelector('.theme-toggle i');
-            themeIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
-        }
+        const app = Vue.createApp({
+            data() {
+                return {
+                    checklist: {
+                        categories: []
+                    },
+                    activeTab: 'authentication',
+                    expandedTests: [],
+                    searchQuery: '',
+                    selectedPlatform: 'all',
+                    isLoading: true
+                };
+            },
+            mounted() {
+                // In a real application, you would fetch this from a JSON file
+                // For this example, we'll embed the data directly
+                this.checklist = {
+                    "categories": [
+                        {
+                            "id": "authentication",
+                            "name": "Authentication Testing",
+                            "tests": [
+                                {
+                                    "name": "Brute Force Protection Bypass",
+                                    "severity": "Critical",
+                                    "platforms": ["web"],
+                                    "description": "Test if the application has proper protection against brute force attacks.",
+                                    "steps": [
+                                        "Set up Burp Suite to intercept login requests",
+                                        "Create a list of common passwords in Burp Intruder",
+                                        "Use Intruder's \"Sniper\" attack with a valid username and password list",
+                                        "Check if account lockout occurs after multiple failed attempts",
+                                        "If timeouts are implemented, check for race conditions by sending parallel requests"
+                                    ],
+                                    "burpSteps": [
+                                        "Capture a login request using Burp Proxy",
+                                        "Right-click and select \"Send to Intruder\"",
+                                        "In Intruder, go to the \"Positions\" tab and clear all payload positions",
+                                        "Add payload position markers around the password parameter value",
+                                        "Go to the \"Payloads\" tab and add common passwords to the payload list",
+                                        "Under \"Options\", enable \"Grep - Match\" and add patterns like \"Invalid credentials\" or \"Login failed\"",
+                                        "Start the attack and analyze results - look for different response lengths, status codes, or missing error messages",
+                                        "Check if you can identify successful login attempts or if account lockout occurs"
+                                    ],
+                                    "tools": ["Burp Suite (Intruder)", "OWASP ZAP"]
+                                },
+                                {
+                                    "name": "JWT Token Vulnerabilities",
+                                    "severity": "Critical",
+                                    "platforms": ["web", "api"],
+                                    "description": "Test for vulnerabilities in JWT implementation, including weak signature verification.",
+                                    "steps": [
+                                        "Intercept a request containing a JWT token",
+                                        "Decode the JWT token (jwt.io)",
+                                        "Try changing the algorithm to \"none\" (alg:none attack)",
+                                        "Try signature stripping and tampering with the claims",
+                                        "Check if the key is weak or predictable (look for 'kid' parameter)",
+                                        "Try brute-forcing the secret key if HMAC is used"
+                                    ],
+                                    "burpSteps": [
+                                        "Intercept a request containing a JWT token in Burp Proxy",
+                                        "Send the request to Repeater",
+                                        "Use the JSON Web Token extension in Burp (need to install from BApp Store)",
+                                        "Right-click on the JWT token and select \"Send to JWT Editor\"",
+                                        "In the JWT Editor, try changing the algorithm to \"none\" in the header and removing the signature",
+                                        "Modify the payload claims (e.g., change role from \"user\" to \"admin\")",
+                                        "Using the \"Attack\" feature to attempt common secret keys",
+                                        "Copy the modified token back to your Repeater request",
+                                        "Send the request and examine the response to see if the server accepts the tampered token"
+                                    ],
+                                    "tools": ["Burp Suite", "JWT_Tool", "jwt.io"]
+                                },
+                                {
+                                    "name": "Insecure Biometric Authentication",
+                                    "severity": "High",
+                                    "platforms": ["mobile"],
+                                    "description": "Test if biometric authentication is properly implemented and not bypassable.",
+                                    "steps": [
+                                        "Root/jailbreak the device (test environment only)",
+                                        "Use Frida to hook into the biometric authentication API",
+                                        "Check if the app accepts any biometric authentication result",
+                                        "Try bypassing the authentication by modifying return values",
+                                        "Check if there's a fallback mechanism that's weaker than biometrics"
+                                    ],
+                                    "burpSteps": [
+                                        "Configure a rooted/jailbroken device to use Burp Suite as a proxy",
+                                        "In Burp, capture the network traffic when biometric authentication is performed",
+                                        "Identify the endpoints responsible for biometric authentication verification",
+                                        "In Burp Repeater, modify the request parameters that indicate successful authentication",
+                                        "Look for parameters like \"authSuccess\", \"biometricVerified\", or JSON fields indicating verification status",
+                                        "Send the modified request with authentication status set to successful",
+                                        "Check if the application accepts the modified response and grants access",
+                                        "Also try bypassing the biometric check entirely by directly accessing endpoints that should be protected"
+                                    ],
+                                    "tools": ["Frida", "Objection", "MobSF", "Burp Suite"]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "authorization",
+                            "name": "Authorization Testing",
+                            "tests": [
+                                {
+                                    "name": "Insecure Direct Object References (IDOR)",
+                                    "severity": "Critical",
+                                    "platforms": ["web", "api"],
+                                    "description": "Test if the application properly validates access to objects based on user authorization.",
+                                    "steps": [
+                                        "Identify endpoints that access resources via identifiers (e.g., /api/users/123, /documents/456)",
+                                        "Log in with a legitimate user account",
+                                        "Access a resource belonging to that user",
+                                        "Modify the resource identifier to access another user's resource",
+                                        "Check if access is granted to the unauthorized resource",
+                                        "Try both sequential IDs and non-sequential identifiers (UUIDs, etc.)"
+                                    ],
+                                    "burpSteps": [
+                                        "Login to the application with a legitimate user account (User A)",
+                                        "Browse the application with Burp Proxy enabled to capture traffic",
+                                        "Identify requests that fetch user-specific resources (look for IDs in URLs, request parameters, or JSON bodies)",
+                                        "Send these requests to Repeater",
+                                        "Modify the resource identifiers (try sequential IDs, UUIDs, etc.) to attempt accessing another user's resources",
+                                        "Send the modified request and check if access is granted to unauthorized resources",
+                                        "For more thorough testing, use the Autorize extension to automatically test IDOR vulnerabilities"
+                                    ],
+                                    "tools": ["Burp Suite", "Autorize extension"]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "injection",
+                            "name": "Injection Testing",
+                            "tests": [
+                                {
+                                    "name": "SQL Injection",
+                                    "severity": "Critical",
+                                    "platforms": ["web", "api", "mobile", "desktop"],
+                                    "description": "Test if user-supplied data is properly sanitized before being used in SQL queries.",
+                                    "steps": [
+                                        "Identify input fields that might interact with a database",
+                                        "Test common SQL injection payloads (quotes, comments, UNION statements)",
+                                        "Check for blind SQL injection using time delays or boolean conditions",
+                                        "Test for second-order SQL injection (stored and later executed)",
+                                        "Attempt to extract database schema information",
+                                        "Try to bypass WAF or input filters"
+                                    ],
+                                    "burpSteps": [
+                                        "Identify potential SQL injection points while browsing with Burp Proxy",
+                                        "Send suspicious requests to Intruder",
+                                        "Load SQL injection payloads from Burp's built-in lists or custom lists",
+                                        "Configure appropriate grep patterns to identify successful injections",
+                                        "For suspected blind SQL injections, use time-based payloads and monitor response times",
+                                        "For more advanced testing, use SQLmap via Burp extensions",
+                                        "Analyze responses for error messages, timing differences, or content variations"
+                                    ],
+                                    "tools": ["Burp Suite", "SQLmap", "OWASP ZAP"]
+                                }
+                            ]
+                        }
+                    ]
+                };
+                
+                // Load all test categories by default
+                if (this.checklist.categories.length > 0) {
+                    this.activeTab = this.checklist.categories[0].id;
+                }
+                
+                this.isLoading = false;
+            },
+            methods: {
+                toggleExpandTest(testName) {
+                    if (this.expandedTests.includes(testName)) {
+                        this.expandedTests = this.expandedTests.filter(name => name !== testName);
+                    } else {
+                        this.expandedTests.push(testName);
+                    }
+                },
+                filteredTests(tests) {
+                    return tests.filter(test => {
+                        // Platform filter
+                        if (this.selectedPlatform !== 'all' && !test.platforms.includes(this.selectedPlatform)) {
+                            return false;
+                        }
+                        
+                        // Search query filter
+                        if (this.searchQuery.trim() === '') {
+                            return true;
+                        }
+                        
+                        const query = this.searchQuery.toLowerCase();
+                        return (
+                            test.name.toLowerCase().includes(query) ||
+                            test.description.toLowerCase().includes(query) ||
+                            test.steps.some(step => step.toLowerCase().includes(query)) ||
+                            test.burpSteps.some(step => step.toLowerCase().includes(query)) ||
+                            test.tools.some(tool => tool.toLowerCase().includes(query))
+                        );
+                    });
+                },
+                platformDisplay(platform) {
+                    switch(platform) {
+                        case 'web': return 'Web';
+                        case 'api': return 'API';
+                        case 'mobile': return 'Mobile';
+                        case 'desktop': return 'Desktop';
+                        default: return platform;
+                    }
+                }
+            }
+        });
+        
+        app.mount('#app');
     </script>
 </body>
 </html>
