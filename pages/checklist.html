@@ -249,160 +249,44 @@
                 };
             },
             mounted() {
+                mounted() {
+    // Fetch the checklist data from the JSON file
+    fetch('security-checklist.json')
+        .then(response => response.json())
+        .then(data => {
+            this.checklist = data;
+            
+            // Load all test categories by default
+            if (this.checklist.categories.length > 0) {
+                this.activeTab = this.checklist.categories[0].id;
+            }
+            
+            this.isLoading = false;
+        })
+        .catch(error => {
+            console.error('Error loading the checklist data:', error);
+        });
+}
                 // In a real application, you would fetch this from a JSON file
                 // For this example, we'll embed the data directly
-                this.checklist = {
-                    "categories": [
-                        {
-                            "id": "authentication",
-                            "name": "Authentication Testing",
-                            "tests": [
-                                {
-                                    "name": "Brute Force Protection Bypass",
-                                    "severity": "Critical",
-                                    "platforms": ["web"],
-                                    "description": "Test if the application has proper protection against brute force attacks.",
-                                    "steps": [
-                                        "Set up Burp Suite to intercept login requests",
-                                        "Create a list of common passwords in Burp Intruder",
-                                        "Use Intruder's \"Sniper\" attack with a valid username and password list",
-                                        "Check if account lockout occurs after multiple failed attempts",
-                                        "If timeouts are implemented, check for race conditions by sending parallel requests"
-                                    ],
-                                    "burpSteps": [
-                                        "Capture a login request using Burp Proxy",
-                                        "Right-click and select \"Send to Intruder\"",
-                                        "In Intruder, go to the \"Positions\" tab and clear all payload positions",
-                                        "Add payload position markers around the password parameter value",
-                                        "Go to the \"Payloads\" tab and add common passwords to the payload list",
-                                        "Under \"Options\", enable \"Grep - Match\" and add patterns like \"Invalid credentials\" or \"Login failed\"",
-                                        "Start the attack and analyze results - look for different response lengths, status codes, or missing error messages",
-                                        "Check if you can identify successful login attempts or if account lockout occurs"
-                                    ],
-                                    "tools": ["Burp Suite (Intruder)", "OWASP ZAP"]
-                                },
-                                {
-                                    "name": "JWT Token Vulnerabilities",
-                                    "severity": "Critical",
-                                    "platforms": ["web", "api"],
-                                    "description": "Test for vulnerabilities in JWT implementation, including weak signature verification.",
-                                    "steps": [
-                                        "Intercept a request containing a JWT token",
-                                        "Decode the JWT token (jwt.io)",
-                                        "Try changing the algorithm to \"none\" (alg:none attack)",
-                                        "Try signature stripping and tampering with the claims",
-                                        "Check if the key is weak or predictable (look for 'kid' parameter)",
-                                        "Try brute-forcing the secret key if HMAC is used"
-                                    ],
-                                    "burpSteps": [
-                                        "Intercept a request containing a JWT token in Burp Proxy",
-                                        "Send the request to Repeater",
-                                        "Use the JSON Web Token extension in Burp (need to install from BApp Store)",
-                                        "Right-click on the JWT token and select \"Send to JWT Editor\"",
-                                        "In the JWT Editor, try changing the algorithm to \"none\" in the header and removing the signature",
-                                        "Modify the payload claims (e.g., change role from \"user\" to \"admin\")",
-                                        "Using the \"Attack\" feature to attempt common secret keys",
-                                        "Copy the modified token back to your Repeater request",
-                                        "Send the request and examine the response to see if the server accepts the tampered token"
-                                    ],
-                                    "tools": ["Burp Suite", "JWT_Tool", "jwt.io"]
-                                },
-                                {
-                                    "name": "Insecure Biometric Authentication",
-                                    "severity": "High",
-                                    "platforms": ["mobile"],
-                                    "description": "Test if biometric authentication is properly implemented and not bypassable.",
-                                    "steps": [
-                                        "Root/jailbreak the device (test environment only)",
-                                        "Use Frida to hook into the biometric authentication API",
-                                        "Check if the app accepts any biometric authentication result",
-                                        "Try bypassing the authentication by modifying return values",
-                                        "Check if there's a fallback mechanism that's weaker than biometrics"
-                                    ],
-                                    "burpSteps": [
-                                        "Configure a rooted/jailbroken device to use Burp Suite as a proxy",
-                                        "In Burp, capture the network traffic when biometric authentication is performed",
-                                        "Identify the endpoints responsible for biometric authentication verification",
-                                        "In Burp Repeater, modify the request parameters that indicate successful authentication",
-                                        "Look for parameters like \"authSuccess\", \"biometricVerified\", or JSON fields indicating verification status",
-                                        "Send the modified request with authentication status set to successful",
-                                        "Check if the application accepts the modified response and grants access",
-                                        "Also try bypassing the biometric check entirely by directly accessing endpoints that should be protected"
-                                    ],
-                                    "tools": ["Frida", "Objection", "MobSF", "Burp Suite"]
-                                }
-                            ]
-                        },
-                        {
-                            "id": "authorization",
-                            "name": "Authorization Testing",
-                            "tests": [
-                                {
-                                    "name": "Insecure Direct Object References (IDOR)",
-                                    "severity": "Critical",
-                                    "platforms": ["web", "api"],
-                                    "description": "Test if the application properly validates access to objects based on user authorization.",
-                                    "steps": [
-                                        "Identify endpoints that access resources via identifiers (e.g., /api/users/123, /documents/456)",
-                                        "Log in with a legitimate user account",
-                                        "Access a resource belonging to that user",
-                                        "Modify the resource identifier to access another user's resource",
-                                        "Check if access is granted to the unauthorized resource",
-                                        "Try both sequential IDs and non-sequential identifiers (UUIDs, etc.)"
-                                    ],
-                                    "burpSteps": [
-                                        "Login to the application with a legitimate user account (User A)",
-                                        "Browse the application with Burp Proxy enabled to capture traffic",
-                                        "Identify requests that fetch user-specific resources (look for IDs in URLs, request parameters, or JSON bodies)",
-                                        "Send these requests to Repeater",
-                                        "Modify the resource identifiers (try sequential IDs, UUIDs, etc.) to attempt accessing another user's resources",
-                                        "Send the modified request and check if access is granted to unauthorized resources",
-                                        "For more thorough testing, use the Autorize extension to automatically test IDOR vulnerabilities"
-                                    ],
-                                    "tools": ["Burp Suite", "Autorize extension"]
-                                }
-                            ]
-                        },
-                        {
-                            "id": "injection",
-                            "name": "Injection Testing",
-                            "tests": [
-                                {
-                                    "name": "SQL Injection",
-                                    "severity": "Critical",
-                                    "platforms": ["web", "api", "mobile", "desktop"],
-                                    "description": "Test if user-supplied data is properly sanitized before being used in SQL queries.",
-                                    "steps": [
-                                        "Identify input fields that might interact with a database",
-                                        "Test common SQL injection payloads (quotes, comments, UNION statements)",
-                                        "Check for blind SQL injection using time delays or boolean conditions",
-                                        "Test for second-order SQL injection (stored and later executed)",
-                                        "Attempt to extract database schema information",
-                                        "Try to bypass WAF or input filters"
-                                    ],
-                                    "burpSteps": [
-                                        "Identify potential SQL injection points while browsing with Burp Proxy",
-                                        "Send suspicious requests to Intruder",
-                                        "Load SQL injection payloads from Burp's built-in lists or custom lists",
-                                        "Configure appropriate grep patterns to identify successful injections",
-                                        "For suspected blind SQL injections, use time-based payloads and monitor response times",
-                                        "For more advanced testing, use SQLmap via Burp extensions",
-                                        "Analyze responses for error messages, timing differences, or content variations"
-                                    ],
-                                    "tools": ["Burp Suite", "SQLmap", "OWASP ZAP"]
-                                }
-                            ]
-                        }
-                    ]
-                };
-                
-                // Load all test categories by default
-                if (this.checklist.categories.length > 0) {
-                    this.activeTab = this.checklist.categories[0].id;
-                }
-                
-                this.isLoading = false;
-            },
+    mounted() {
+    // Fetch the checklist data from the JSON file
+    fetch('bugs.json')
+        .then(response => response.json())
+        .then(data => {
+            this.checklist = data;
+            
+            // Load all test categories by default
+            if (this.checklist.categories.length > 0) {
+                this.activeTab = this.checklist.categories[0].id;
+            }
+            
+            this.isLoading = false;
+        })
+        .catch(error => {
+            console.error('Error loading the checklist data:', error);
+        });
+},
             methods: {
                 toggleExpandTest(testName) {
                     if (this.expandedTests.includes(testName)) {
