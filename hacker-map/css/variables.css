@@ -1,0 +1,88 @@
+:root {
+  /* Background Colors */
+  --bg-primary: #000000;
+  --bg-secondary: #050505;
+  --bg-panel: #080d08;
+  
+  /* Border Colors */
+  --border-panel: #163d16;
+  
+  /* Accents & Highlights */
+  --neon-green: #00ff41;
+  --green-secondary: #00c853;
+  --green-muted: #1d6b35;
+  
+  /* Text Colors */
+  --terminal-text: #39ff14;
+  --dim-text: #5d8a5d;
+  --text-primary: #d7ffd7;
+  --text-white: #e0e0e0;
+  
+  /* Severities */
+  --severity-critical: #ff0040;
+  --severity-high: #ff6600;
+  --severity-medium: #ffcc00;
+  --severity-low: #00ccff;
+  --severity-info: #00ff41;
+  
+  /* Typography */
+  --font-mono: 'Fira Code', 'Source Code Pro', 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  
+  /* Spacing Scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  
+  /* Border Radius */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-full: 50%;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Z-Index Scale */
+  --z-matrix-bg: -1;
+  --z-base: 1;
+  --z-sidebar: 100;
+  --z-hamburger: 900;
+  --z-nav: 1000;
+  --z-dropdown: 1500;
+  --z-modal: 2000;
+  --z-notification: 3000;
+  
+  /* Layout Dimensions */
+  --sidebar-width: 320px;
+  --nav-height: 52px;
+  --terminal-height: 220px;
+  
+  /* Effects */
+  --glow-sm: 0 0 5px rgba(0, 255, 65, 0.3);
+  --glow-md: 0 0 10px rgba(0, 255, 65, 0.5);
+  --glow-lg: 0 0 20px rgba(0, 255, 65, 0.6);
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.9);
+  
+  /* Animation Durations */
+  --anim-fast: 0.2s;
+  --anim-normal: 0.5s;
+  --anim-slow: 1.5s;
+}
+
+/* 
+  Breakpoints Reference (Cannot be used in media queries natively without custom media queries plugin, but documented here):
+  --bp-tablet: 1200px;
+  --bp-tablet-portrait: 900px;
+  --bp-mobile: 600px;
+*/

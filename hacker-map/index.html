@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H4CK3R M4P | Cyber Threat Intelligence</title>
+    <meta name="description" content="Real-time cyber threat intelligence dashboard by 0xsh4n">
+    <meta name="theme-color" content="#000000">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/hacker.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff00'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/></svg>">
+</head>
+<body>
+    <div id="app">
+        <canvas id="matrix-canvas" class="matrix-canvas" aria-hidden="true"></canvas>
+        <div id="runtime-notice" class="runtime-notice" role="alert" hidden></div>
+
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <span class="logo glow-text">H4CK3R M4P</span>
+                <span class="nav-author">by <a href="https://github.com/0xsh4n" target="_blank" rel="noopener noreferrer">0xsh4n</a></span>
+                <span class="nav-subtitle">CYBER THREAT INTELLIGENCE</span>
+            </div>
+            
+            <div class="nav-links" role="tablist" aria-label="Primary dashboard views">
+                <button class="nav-link active" data-view="map" role="tab" aria-controls="view-map" aria-selected="true">LIVE MAP</button>
+                <button class="nav-link" data-view="cve" role="tab" aria-controls="view-cve" aria-selected="false" tabindex="-1">CVE INTEL</button>
+                <button class="nav-link" data-view="writeups" role="tab" aria-controls="view-writeups" aria-selected="false" tabindex="-1">WRITEUPS</button>
+                <button class="nav-link" data-view="threats" role="tab" aria-controls="view-threats" aria-selected="false" tabindex="-1">THREAT FEED</button>
+                <button class="nav-link" data-view="settings" role="tab" aria-controls="view-settings" aria-selected="false" tabindex="-1">SETTINGS</button>
+            </div>
+            
+            <div class="nav-status">
+                <span class="data-mode demo" id="data-mode-badge">DEMO</span>
+                <span class="live-indicator"><span class="live-dot" id="live-dot"></span><span class="live-label" id="live-label">SIMULATED</span></span>
+                <span class="time-display" id="utc-time">00:00:00 UTC</span>
+                <span class="time-display" id="local-time">00:00:00</span>
+                <button class="btn-icon" id="search-btn" aria-label="Search intelligence" title="Search intelligence (Ctrl+K)">⌕</button>
+                <button class="btn-icon notif-btn" id="notif-btn" aria-label="Notifications" title="Notifications">
+                    🔔<span class="notif-badge" id="notif-count" style="display:none">0</span>
+                </button>
+                <button class="btn-icon" id="fullscreen-btn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button>
+                <button class="btn-icon" id="refresh-btn" aria-label="Refresh data" title="Refresh">↻</button>
+                <button class="btn-icon hamburger" id="hamburger-btn" aria-label="Menu" title="Menu">☰</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section id="view-map" class="view active" role="tabpanel" aria-label="Live map dashboard">
+                <aside class="left-sidebar">
+                    <div class="panel">
+                        <div class="panel-header">GLOBAL THREAT STATUS</div>
+                        <div class="panel-body">
+                            <div class="stat-row"><span class="stat-label">TOTAL EVENTS</span><span class="stat-value" id="stat-total">0</span></div>
+                            <div class="stat-row"><span class="stat-label">CRITICAL</span><span class="stat-value critical" id="stat-critical">0</span></div>
+                            <div class="stat-row"><span class="stat-label">HIGH</span><span class="stat-value high" id="stat-high">0</span></div>
+                            <div class="stat-row"><span class="stat-label">MEDIUM</span><span class="stat-value medium" id="stat-medium">0</span></div>
+                            <div class="stat-row"><span class="stat-label">LOW</span><span class="stat-value low" id="stat-low">0</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">TOP ATTACK TYPES</div>
+                        <div id="attack-types-list" class="panel-body"></div>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">TOP TARGETED COUNTRIES</div>
+                        <div id="targeted-countries" class="panel-body"></div>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">TOP SOURCE COUNTRIES</div>
+                        <div id="source-countries" class="panel-body"></div>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">SYSTEM STATUS</div>
+                        <div class="panel-body">
+                            <div class="stat-row"><span class="stat-label">ATTACK FEED</span><span id="status-attack"><span class="status-indicator status-online"></span>SIMULATED</span></div>
+                            <div class="stat-row"><span class="stat-label">CVE FEED</span><span id="status-cve"><span class="status-indicator status-degraded"></span>SYNC…</span></div>
+                            <div class="stat-row"><span class="stat-label">RESEARCH FEED</span><span id="status-research"><span class="status-indicator status-degraded"></span>SYNC…</span></div>
+                            <div class="stat-row"><span class="stat-label">LAST UPDATED</span><span id="status-last-update">Never</span></div>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="map-container">
+                    <div id="attack-map" class="attack-map"></div>
+                    <div class="map-controls overlay-controls">
+                        <button class="btn-icon" id="map-filter-btn" aria-label="Filter Map" title="Filter Threats">⚡ Filter</button>
+                        <button class="btn-icon" id="map-pause-btn" aria-label="Pause/Resume" title="Pause/Resume Visuals">⏸</button>
+                        <div class="attack-counter">Active: 0</div>
+                    </div>
+                    <div id="map-filter-dropdown" class="map-filter-dropdown" style="display:none;">
+                        <div class="filter-group">
+                            <label for="map-filter-type">ATTACK TYPE</label>
+                            <select id="map-filter-type">
+                                <option value="ALL">ALL TYPES</option>
+                                <option value="Brute Force">Brute Force</option>
+                                <option value="DDoS">DDoS</option>
+                                <option value="Exploit Attempt">Exploit Attempt</option>
+                                <option value="Ransomware">Ransomware</option>
+                                <option value="Malware">Malware</option>
+                                <option value="Botnet">Botnet</option>
+                                <option value="Phishing">Phishing</option>
+                                <option value="Suspicious Scanning">Scanning</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="map-filter-severity">SEVERITY</label>
+                            <select id="map-filter-severity">
+                                <option value="ALL">ALL SEVERITIES</option>
+                                <option value="CRITICAL">CRITICAL</option>
+                                <option value="HIGH">HIGH</option>
+                                <option value="MEDIUM">MEDIUM</option>
+                                <option value="LOW">LOW</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="right-sidebar">
+                    <div class="panel h-100">
+                        <div class="panel-header">
+                            <span>THREAT TIMELINE</span>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span class="event-count" id="timeline-count">0 Events</span>
+                                <button id="timeline-clear-btn" class="btn-clear" aria-label="Clear Timeline" title="Clear Timeline">CLEAR</button>
+                            </div>
+                        </div>
+                        <div id="threat-timeline" class="threat-timeline panel-body"></div>
+                    </div>
+                </aside>
+            </section>
+
+            <section id="view-cve" class="view page-section" role="tabpanel" aria-label="CVE intelligence">
+                <header class="page-header">
+                    <h2>CVE INTELLIGENCE CENTER</h2>
+                    <div class="tabs">
+                        <button class="tab active">LATEST</button>
+                        <button class="tab">CRITICAL</button>
+                        <button class="tab">HIGH</button>
+                        <button class="tab">KNOWN EXPLOITED</button>
+                        <button class="tab">SEARCH</button>
+                    </div>
+                    <input type="search" class="search-bar" placeholder="Search CVEs...">
+                </header>
+                <div id="cve-grid" class="cve-grid"></div>
+            </section>
+
+            <section id="view-writeups" class="view page-section" role="tabpanel" aria-label="Security research">
+                <header class="page-header">
+                    <h2>LATEST SECURITY RESEARCH</h2>
+                    <div class="tabs" id="writeups-tabs">
+                        <button class="tab active">ALL</button>
+                        <button class="tab">BUG BOUNTY</button>
+                        <button class="tab">WEB SECURITY</button>
+                        <button class="tab">CVES</button>
+                        <button class="tab">PENTESTING</button>
+                        <button class="tab">RESEARCH</button>
+                        <button class="tab">EXPLOITATION</button>
+                    </div>
+                    <div class="controls">
+                        <select class="sort-select" id="writeups-sort-select" aria-label="Sort writeups">
+                            <option value="newest">Newest First</option>
+                            <option value="trending">Trending</option>
+                            <option value="source">By Source</option>
+                        </select>
+                        <input type="search" class="search-bar" id="writeups-search-input" placeholder="Search writeups, tags, bug bounty tips, authors...">
+                    </div>
+                </header>
+                <div id="writeups-grid" class="writeups-grid"></div>
+            </section>
+
+            <section id="view-threats" class="view page-section" role="tabpanel" aria-label="Cyber threat feed">
+                <header class="page-header">
+                    <h2>CYBER THREAT FEED</h2>
+                    <div class="filter-controls">
+                        <button class="btn-filter active">All</button>
+                        <button class="btn-filter">Critical</button>
+                        <button class="btn-filter">High</button>
+                        <button class="btn-filter">Medium</button>
+                        <button class="btn-filter">Low</button>
+                    </div>
+                </header>
+                <div id="threat-feed-list"></div>
+            </section>
+
+            <section id="view-settings" class="view page-section" role="tabpanel" aria-label="Dashboard settings">
+                <header class="page-header">
+                    <h2>SETTINGS</h2>
+                </header>
+                <form class="settings-form">
+                    <fieldset>
+                        <legend>Display</legend>
+                        <div class="setting-row">
+                            <label for="setting-matrix-bg">Matrix Background</label>
+                            <input type="checkbox" id="setting-matrix-bg" checked>
+                        </div>
+                        <div class="setting-row">
+                            <label for="setting-animations">Attack Animations</label>
+                            <input type="checkbox" id="setting-animations" checked>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Sound</legend>
+                        <div class="setting-row">
+                            <label for="setting-sound">Sound Effects</label>
+                            <input type="checkbox" id="setting-sound" checked>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Data</legend>
+                        <div class="setting-row">
+                            <label for="setting-auto-refresh">Auto-Refresh</label>
+                            <input type="checkbox" id="setting-auto-refresh" checked>
+                        </div>
+                        <div class="setting-row">
+                            <label for="setting-refresh-interval">Refresh Interval</label>
+                            <select id="setting-refresh-interval">
+                                <option value="15000">15 Seconds</option>
+                                <option value="30000">30 Seconds</option>
+                                <option value="60000">1 Minute</option>
+                                <option value="300000">5 Minutes</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <span style="font-size:0.68rem; color:var(--dim-text); line-height:1.5;">Intelligence feeds are always <strong style="color:var(--neon-green);">LIVE</strong> from keyless public APIs — NVD (CVEs), Hacker News (research), GitHub Advisories (threats). The world attack map is always a labeled <strong style="color:var(--severity-medium);">SIMULATION</strong>.</span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Notifications</legend>
+                        <div class="setting-row">
+                            <label for="setting-notifications">Enable Notifications</label>
+                            <input type="checkbox" id="setting-notifications" checked>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+        </main>
+
+        <footer class="bottom-terminal">
+            <div class="terminal-header">
+                <span>▸ SYSTEM INTELLIGENCE LOG</span>
+                <div class="terminal-controls">
+                    <button id="terminal-pause" class="btn-icon" aria-label="Pause Logs" title="Pause">⏸</button>
+                    <button id="terminal-clear" class="btn-icon" aria-label="Clear Logs" title="Clear">🗑</button>
+                    <button id="terminal-copy" class="btn-icon" aria-label="Copy Logs" title="Copy">📋</button>
+                    <button id="terminal-toggle" class="btn-icon" aria-label="Toggle Collapse" title="Toggle">🔽</button>
+                </div>
+            </div>
+            <div class="terminal-content">
+                <div id="terminal-log" aria-live="polite" aria-atomic="false"></div>
+            </div>
+        </footer>
+
+        <div id="modal-container"></div>
+
+        <div id="notification-panel" class="notification-panel" role="region" aria-label="Notifications" style="display:none">
+            <header>
+                <span>NOTIFICATIONS</span>
+                <button class="btn-clear-notif" aria-label="Clear Notifications">Clear All</button>
+            </header>
+            <div id="notification-list" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <script>
+        if (window.location.protocol === 'file:') {
+            const notice = document.getElementById('runtime-notice');
+            notice.hidden = false;
+            notice.innerHTML = 'DIRECT FILE MODE: browsers block ES modules on <code>file://</code>. ' +
+                'Run <code>python3 -m http.server</code> in this folder and open ' +
+                '<code>http://localhost:8000</code>, or just push the folder to GitHub Pages — ' +
+                'it works there with no setup and no API keys.';
+        }
+    </script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
