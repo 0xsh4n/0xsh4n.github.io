@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>0xsh4n | Offensive Security Engineer</title>
-    <meta name="description" content="Offensive security engineer specializing in application security, VAPT, red teaming, and AI security. Available for freelance security assessments.">
+    <meta name="description" content="Offensive security engineer. Web, API, mobile and AI/LLM application security, plus Linux, Windows and Active Directory pentesting. Available for freelance VAPT and AppSec work.">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action https://formsubmit.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self' https://api.rss2json.com https://formsubmit.co; upgrade-insecure-requests">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <style>
         :root {
             --font: "Ubuntu", sans-serif;
+            --mono: "Ubuntu Mono", ui-monospace, monospace;
 
             --bg: #0b0d10;
             --bg-elevated: #12151a;
@@ -131,7 +132,7 @@
         .section-lead {
             color: var(--text-muted);
             font-size: 1.05rem;
-            max-width: 36rem;
+            max-width: 42rem;
         }
 
         .btn {
@@ -208,7 +209,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 1.75rem;
+            gap: 1.2rem;
         }
 
         .nav-links a {
@@ -315,7 +316,7 @@
         .hero-content {
             position: relative;
             z-index: 1;
-            max-width: 720px;
+            max-width: 760px;
         }
 
         .hero-brand {
@@ -344,7 +345,7 @@
         .hero-sub {
             color: var(--text-muted);
             font-size: clamp(1rem, 2vw, 1.15rem);
-            max-width: 40ch;
+            max-width: 46ch;
             margin-bottom: 2.25rem;
             opacity: 0;
             animation: rise 0.9s var(--ease) 0.4s forwards;
@@ -408,6 +409,7 @@
         }
 
         .about-copy strong { color: var(--text); font-weight: 500; }
+        .about-copy a { color: var(--accent); font-weight: 500; }
 
         .about-side {
             display: flex;
@@ -603,6 +605,179 @@
         .project-link i { transition: transform 0.25s var(--ease); }
         .project-item:hover .project-link i { transform: translateX(4px); }
 
+        /* ---------- AI Security ---------- */
+        .ai-security { background: var(--bg-elevated); border-block: 1px solid var(--border); }
+
+        .capability-grid {
+            margin-top: 2.75rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .capability-card {
+            padding: 1.85rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.65s var(--ease), transform 0.65s var(--ease), border-color 0.25s;
+        }
+
+        .capability-card.visible { opacity: 1; transform: translateY(0); }
+        .capability-card:hover { border-color: var(--accent); }
+
+        .capability-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 6px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .capability-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+        }
+
+        .capability-card ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .capability-card li {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .capability-card li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 5px;
+            height: 5px;
+            background: var(--steel);
+            border-radius: 1px;
+        }
+
+        .capability-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+        .owasp-note {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.25rem;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            background: var(--surface);
+        }
+
+        .owasp-note p { color: var(--text-muted); font-size: 0.98rem; max-width: 56ch; }
+        .owasp-note strong { color: var(--text); font-weight: 500; }
+        .owasp-note .btn { flex: none; }
+
+        /* ---------- Resources ---------- */
+        .resource-grid {
+            margin-top: 2.75rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .resource-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.9rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.65s var(--ease), transform 0.65s var(--ease), border-color 0.25s, background 0.25s;
+        }
+
+        .resource-card.visible { opacity: 1; transform: translateY(0); }
+        .resource-card:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+        .resource-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent 75%);
+            opacity: 0.75;
+        }
+
+        .resource-top { display: flex; align-items: center; gap: 0.9rem; }
+
+        .resource-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 6px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 1.3rem;
+            flex: none;
+        }
+
+        .resource-top h3 { font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
+        .resource-top .host { font-family: var(--mono); font-size: 0.78rem; color: var(--text-faint); }
+
+        .resource-card > p { color: var(--text-muted); font-size: 0.98rem; flex: 1; }
+
+        .resource-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+        .resource-open {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.15rem;
+        }
+
+        .resource-open i { transition: transform 0.25s var(--ease); }
+        .resource-card:hover .resource-open i { transform: translate(3px, -3px); }
+
+        /* ---------- Labs ---------- */
+        .elevated-section { background: var(--bg-elevated); border-block: 1px solid var(--border); }
+
+        .labs-grid {
+            margin-top: 2.75rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            align-items: start;
+        }
+
+        .platform-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* ---------- Skills ---------- */
         .skills-wrap {
             margin-top: 2.5rem;
             display: grid;
@@ -763,7 +938,8 @@
         }
 
         .form-field input,
-        .form-field textarea {
+        .form-field textarea,
+        .form-field select {
             width: 100%;
             padding: 0.85rem 1rem;
             background: var(--bg);
@@ -776,7 +952,8 @@
         }
 
         .form-field input:focus,
-        .form-field textarea:focus {
+        .form-field textarea:focus,
+        .form-field select:focus {
             outline: none;
             border-color: var(--accent);
         }
@@ -848,30 +1025,7 @@
 
         .footer-social a:hover { color: var(--accent); }
 
-        @media (max-width: 900px) {
-            .about-grid,
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .skills-wrap,
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .timeline-item {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-
-            .project-item {
-                grid-template-columns: 1fr;
-                gap: 0.75rem;
-            }
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 960px) {
             .menu-btn { display: grid; }
 
             .nav-links {
@@ -901,7 +1055,35 @@
                 padding: 0.9rem 1.25rem;
                 border-bottom: 1px solid var(--border);
             }
+        }
 
+        @media (max-width: 900px) {
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .skills-wrap,
+            .blog-grid,
+            .capability-grid,
+            .resource-grid,
+            .labs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .project-item {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
             .hero {
                 align-items: center;
                 padding-bottom: 3rem;
@@ -938,8 +1120,11 @@
                 <a href="#about">About</a>
                 <a href="#experience">Experience</a>
                 <a href="#projects">Projects</a>
+                <a href="#ai-security">AI Security</a>
                 <a href="#skills">Skills</a>
-                <a href="#blogs">Blogs</a>
+                <a href="#labs">Labs</a>
+                <a href="#resources">Resources</a>
+                <a href="#blogs">Writeups</a>
                 <a href="#contact">Contact</a>
             </div>
             <div class="nav-actions">
@@ -960,14 +1145,14 @@
         <div class="container hero-content">
             <p class="hero-brand">0x<span class="accent">sh4n</span></p>
             <h1 class="hero-headline">I break into apps so attackers don't have to.</h1>
-            <p class="hero-sub">Application security analyst focused on web, API, and mobile testing. Also available for freelance VAPT and AppSec work.</p>
+            <p class="hero-sub">Application security analyst. I test web, API and mobile apps, and lately the AI layer around them: LLM apps, RAG pipelines and agents. Open to freelance VAPT and AppSec work.</p>
             <div class="hero-cta">
                 <a href="#contact" class="btn btn-primary">Freelance inquiries</a>
-                <a href="#projects" class="btn btn-ghost">See my work</a>
+                <a href="#resources" class="btn btn-ghost">Open resources</a>
             </div>
             <div class="hero-meta">
                 <div>
-                    <strong>Web, API &amp; Mobile</strong>
+                    <strong>Web, API, mobile, AI</strong>
                     <span>What I test</span>
                 </div>
                 <div>
@@ -986,18 +1171,21 @@
         <div class="container">
             <p class="section-label">About</p>
             <h2 class="section-title">About 0xsh4n</h2>
-            <p class="section-lead">Offensive security work with a focus on how real applications fail in production.</p>
+            <p class="section-lead">Offensive security work, focused on how real applications actually break in production. These days that includes the new failure modes AI brings with it.</p>
 
             <div class="about-grid">
                 <div class="about-copy">
                     <p>
-                        I'm an <strong>Associate Security Analyst</strong> working on web, API, and mobile application security. Day to day that means hands on testing with Burp Suite and similar tooling, looking for auth issues, broken access control, and messy business logic.
+                        I'm an <strong>Associate Security Analyst</strong> working on web, API, and mobile application security. Day to day that means hands-on testing with Burp Suite and similar tooling, hunting for auth issues, broken access control, and messy business logic.
                     </p>
                     <p>
-                        Alongside full time work, I take on <strong>freelance security engagements</strong>. Short VAPT projects, targeted AppSec reviews, and mobile assessments for teams that need an extra set of offensive eyes.
+                        Lately a lot of that work touches <strong>AI and LLM systems</strong>. Prompt injection, RAG retrieval boundaries, agent tool abuse, and the ordinary web bugs sitting in the API around the model. Most teams haven't looked hard at it yet, so there's plenty to find.
                     </p>
                     <p>
-                        Outside engagements I build small security tools and publish technical write ups. Recon helpers, AI model scanning, automation around bounty workflows. Practical stuff I wish existed when I needed it.
+                        I also pick up <strong>freelance work</strong> alongside my full-time job. Short VAPT projects, focused AppSec reviews, and mobile assessments when a team wants an extra set of offensive eyes.
+                    </p>
+                    <p>
+                        When I'm not on an engagement I build small security tools and write up what I find. Recon helpers, AI model scanning, some automation around bounty workflows. A couple are live and free to use over in <a href="#resources">resources</a>.
                     </p>
                     <div class="social-row">
                         <a href="https://github.com/0xsh4n" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
@@ -1011,12 +1199,16 @@
                         <p>Associate Security Analyst<br>Application security &amp; VAPT</p>
                     </div>
                     <div class="info-block">
+                        <h3>Focus areas</h3>
+                        <p>Web · API · Mobile<br>LLM / RAG / agent security</p>
+                    </div>
+                    <div class="info-block">
                         <h3>Education</h3>
                         <p>B.E. Computer Science &amp; Engineering<br>2021 to 2025</p>
                     </div>
                     <div class="info-block">
                         <h3>Freelance</h3>
-                        <p>Open for VAPT, AppSec reviews, and mobile security assessments</p>
+                        <p>Open for VAPT, AppSec reviews, mobile and AI security assessments</p>
                     </div>
                 </aside>
             </div>
@@ -1181,6 +1373,83 @@
         </div>
     </section>
 
+    <section class="section ai-security" id="ai-security">
+        <div class="container">
+            <p class="section-label">AI Security</p>
+            <h2 class="section-title">Securing AI &amp; LLM systems</h2>
+            <p class="section-lead">The model is only part of the attack surface. I test the rest of the system too: retrieval, tools, output rendering, and the API around it. Findings map to the OWASP Top 10 for LLM Applications.</p>
+
+            <div class="capability-grid">
+                <article class="capability-card reveal">
+                    <div class="capability-icon"><i class="fas fa-robot" aria-hidden="true"></i></div>
+                    <h3>LLM application testing</h3>
+                    <ul>
+                        <li>Direct and indirect prompt injection, jailbreaks, and system-prompt leakage</li>
+                        <li>Insecure output handling: markdown and HTML XSS, plus data exfil through rendered replies</li>
+                        <li>Unbounded consumption and denial-of-wallet abuse</li>
+                    </ul>
+                    <div class="capability-tags">
+                        <span class="tag">Prompt Injection</span>
+                        <span class="tag">Output Handling</span>
+                        <span class="tag">Jailbreaks</span>
+                    </div>
+                </article>
+
+                <article class="capability-card reveal">
+                    <div class="capability-icon"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
+                    <h3>RAG &amp; retrieval security</h3>
+                    <ul>
+                        <li>Cross-tenant document leakage and retrieval-boundary bypass</li>
+                        <li>Indirect injection planted in ingested documents and pages</li>
+                        <li>Vector / embedding weaknesses and knowledge-base poisoning</li>
+                    </ul>
+                    <div class="capability-tags">
+                        <span class="tag">Retrieval</span>
+                        <span class="tag">Vector DB</span>
+                        <span class="tag">Data Poisoning</span>
+                    </div>
+                </article>
+
+                <article class="capability-card reveal">
+                    <div class="capability-icon"><i class="fas fa-diagram-project" aria-hidden="true"></i></div>
+                    <h3>Agent &amp; tool security</h3>
+                    <ul>
+                        <li>Excessive agency: unauthorized or cross-user tool actions</li>
+                        <li>Tool-parameter injection that becomes IDOR or SSRF <em>through</em> the tool call</li>
+                        <li>Confused-deputy issues, tool chaining, and permission scoping</li>
+                    </ul>
+                    <div class="capability-tags">
+                        <span class="tag">Excessive Agency</span>
+                        <span class="tag">SSRF</span>
+                        <span class="tag">Tool Abuse</span>
+                    </div>
+                </article>
+
+                <article class="capability-card reveal">
+                    <div class="capability-icon"><i class="fas fa-cube" aria-hidden="true"></i></div>
+                    <h3>Model &amp; supply-chain security</h3>
+                    <ul>
+                        <li>Malicious model files: pickle RCE in PyTorch, GGUF, and safetensors</li>
+                        <li>Secrets and PII left inside model artifacts</li>
+                        <li>Unsafe deserialization and dependency risk. It's what I built <strong>TensorHawk</strong> to catch.</li>
+                    </ul>
+                    <div class="capability-tags">
+                        <span class="tag">Model Files</span>
+                        <span class="tag">Pickle RCE</span>
+                        <span class="tag">Supply Chain</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="owasp-note reveal">
+                <p><strong>The full methodology is free and searchable.</strong> It's the chatbot and LLM runbook I actually use (recon to report, with IDOR and SSRF walk-throughs), backed by around 940 checks across web3, API, cloud, and mobile.</p>
+                <a href="https://0xsh4n.github.io/bugbounty-methodology" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Open the runbook <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section class="section" id="skills">
         <div class="container">
             <p class="section-label">Expertise</p>
@@ -1193,20 +1462,21 @@
                     <ul>
                         <li>Web and API penetration testing</li>
                         <li>Mobile application security</li>
-                        <li>Red teaming and offensive security</li>
-                        <li>Bug bounty hunting</li>
-                        <li>AI and ML model security</li>
-                        <li>Vulnerability assessment (VAPT)</li>
+                        <li>AI, LLM and RAG application testing</li>
+                        <li>AI model and supply-chain security</li>
+                        <li>Linux, Windows and Active Directory pentesting</li>
+                        <li>Network pentesting and privilege escalation</li>
+                        <li>Red teaming, bug bounty and VAPT</li>
                     </ul>
                 </div>
                 <div class="skill-group reveal">
                     <h3>How I approach it</h3>
                     <ul>
-                        <li>OWASP Top 10 and ASVS</li>
+                        <li>OWASP Top 10, ASVS &amp; OWASP LLM Top 10</li>
                         <li>Auth and session testing</li>
                         <li>Access control and IDOR review</li>
                         <li>Business logic abuse</li>
-                        <li>WAF bypass techniques</li>
+                        <li>Prompt injection &amp; agent tool abuse</li>
                         <li>Clear PoCs and fix guidance</li>
                     </ul>
                 </div>
@@ -1225,13 +1495,112 @@
         </div>
     </section>
 
+    <section class="section elevated-section" id="labs">
+        <div class="container">
+            <p class="section-label">Labs</p>
+            <h2 class="section-title">Keeping the skills sharp</h2>
+            <p class="section-lead">Outside client work I grind boxes and CTF-style labs. It's how I stay current on the infrastructure and Active Directory attack paths a normal web assessment never touches.</p>
+
+            <div class="labs-grid">
+                <article class="capability-card reveal">
+                    <div class="capability-icon"><i class="fas fa-terminal" aria-hidden="true"></i></div>
+                    <h3>Infrastructure and Active Directory</h3>
+                    <ul>
+                        <li>Linux privilege escalation and enumeration</li>
+                        <li>Windows privilege escalation and host review</li>
+                        <li>AD attacks: Kerberoasting, AS-REP roasting, ACL abuse, lateral movement</li>
+                        <li>Network enumeration, pivoting, and post-exploitation</li>
+                    </ul>
+                    <div class="capability-tags">
+                        <span class="tag">Linux</span>
+                        <span class="tag">Windows</span>
+                        <span class="tag">Active Directory</span>
+                    </div>
+                </article>
+
+                <div class="platform-stack">
+                    <a class="resource-card reveal" href="https://www.hackthebox.com/" target="_blank" rel="noopener noreferrer">
+                        <div class="resource-top">
+                            <div class="resource-icon"><i class="fas fa-cube" aria-hidden="true"></i></div>
+                            <div>
+                                <h3>HackTheBox</h3>
+                                <span class="host">https://profile.hackthebox.com/profile/01a0a47c-cf8c-73a6-a3fc-9112d8ee447f</span>
+                            </div>
+                        </div>
+                        <p>Working through Linux, Windows, and Active Directory machines, plus pro-lab style networks for full attack chains.</p>
+                        <span class="resource-open">View profile <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                    </a>
+
+                    <a class="resource-card reveal" href="https://tryhackme.com/" target="_blank" rel="noopener noreferrer">
+                        <div class="resource-top">
+                            <div class="resource-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
+                            <div>
+                                <h3>TryHackMe</h3>
+                                <span class="host">https://tryhackme.com/p/0xsh4n</span>
+                            </div>
+                        </div>
+                        <p>Structured rooms across web, network, and AD. Good for filling gaps and staying sharp between engagements.</p>
+                        <span class="resource-open">View profile <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="resources">
+        <div class="container">
+            <p class="section-label">Resources</p>
+            <h2 class="section-title">Open playbooks &amp; tools</h2>
+            <p class="section-lead">Two things I built and still use. Both are free, open, and run entirely in your browser. Nothing to sign up for, and nothing leaves your machine.</p>
+
+            <div class="resource-grid">
+                <a class="resource-card reveal" href="https://0xsh4n.github.io/bugbounty-methodology" target="_blank" rel="noopener noreferrer">
+                    <div class="resource-top">
+                        <div class="resource-icon"><i class="fas fa-book-open" aria-hidden="true"></i></div>
+                        <div>
+                            <h3>Bug Bounty Runbook</h3>
+                            <span class="host">0xsh4n.github.io/bugbounty-methodology</span>
+                        </div>
+                    </div>
+                    <p>A searchable field runbook. My chatbot and LLM methodology sits up front (recon to report, with IDOR and SSRF walk-throughs), backed by around 940 checks across web3, API, JS, Azure, DAST, iOS and Android. Filter by severity and tick items off as you go. Progress saves in your browser.</p>
+                    <div class="resource-tags">
+                        <span class="tag">LLM</span>
+                        <span class="tag">Web3</span>
+                        <span class="tag">API</span>
+                        <span class="tag">Mobile</span>
+                        <span class="tag">Cloud</span>
+                    </div>
+                    <span class="resource-open">Open resource <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="resource-card reveal" href="https://0xsh4n.github.io/hacker-map" target="_blank" rel="noopener noreferrer">
+                    <div class="resource-top">
+                        <div class="resource-icon"><i class="fas fa-earth-americas" aria-hidden="true"></i></div>
+                        <div>
+                            <h3>H4CK3R M4P</h3>
+                            <span class="host">0xsh4n.github.io/hacker-map</span>
+                        </div>
+                    </div>
+                    <p>A threat-intel dashboard. It pulls a live CVE feed from NVD, recent security research and advisories, and a threat feed, all around an animated world attack map (labelled as a simulation). Everything runs on keyless public APIs, so there's nothing to set up.</p>
+                    <div class="resource-tags">
+                        <span class="tag">CVE Intel</span>
+                        <span class="tag">Threat Feed</span>
+                        <span class="tag">Research</span>
+                        <span class="tag">OSINT</span>
+                    </div>
+                    <span class="resource-open">Open resource <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section class="section blogs" id="blogs">
         <div class="container">
             <div class="blogs-header">
                 <div>
-                    <p class="section-label">Blogs</p>
+                    <p class="section-label">Writeups</p>
                     <h2 class="section-title">Things I've written</h2>
-                    <p class="section-lead">Fresh posts from my Medium. Stories from assessments, labs, and learning along the way.</p>
+                    <p class="section-lead">Recent posts from my Medium. Case studies from real assessments, lab notes, and things I picked up along the way.</p>
                 </div>
                 <a href="https://mrshan.medium.com/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
                     <i class="fab fa-medium"></i> Read on Medium
@@ -1257,6 +1626,7 @@
                     <ul class="freelance-list">
                         <li>Web and API vulnerability assessment / penetration testing</li>
                         <li>Mobile application security assessments</li>
+                        <li>AI / LLM, RAG and agent security reviews</li>
                         <li>Application security reviews and remediation guidance</li>
                         <li>Targeted auth, access control, and business logic testing</li>
                     </ul>
@@ -1281,11 +1651,12 @@
                     </div>
                     <div class="form-field">
                         <label for="project-type">Engagement type</label>
-                        <select id="project-type" name="engagement_type" required style="width:100%;padding:0.85rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--font);font-size:1rem;">
+                        <select id="project-type" name="engagement_type" required>
                             <option value="" disabled selected>Select one</option>
                             <option value="Freelance VAPT">Freelance VAPT</option>
                             <option value="AppSec review">AppSec review</option>
                             <option value="Mobile assessment">Mobile assessment</option>
+                            <option value="AI / LLM security">AI / LLM security</option>
                             <option value="General inquiry">General inquiry</option>
                         </select>
                     </div>
