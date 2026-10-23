@@ -532,6 +532,12 @@
             margin-bottom: 2.5rem;
         }
 
+        .projects-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
         .project-list {
             display: flex;
             flex-direction: column;
@@ -1144,7 +1150,7 @@
         </div>
         <div class="container hero-content">
             <p class="hero-brand">0x<span class="accent">sh4n</span></p>
-            <h1 class="hero-headline">I break into apps so attackers don't have to.</h1>
+            <h1 class="hero-headline">Breaking apps before attackers get the chance.</h1>
             <p class="hero-sub">Application security analyst. I test web, API and mobile apps, and lately the AI layer around them: LLM apps, RAG pipelines and agents. Open to freelance VAPT and AppSec work.</p>
             <div class="hero-cta">
                 <a href="#contact" class="btn btn-primary">Freelance inquiries</a>
@@ -1156,8 +1162,12 @@
                     <span>What I test</span>
                 </div>
                 <div>
-                    <strong>1.5+ years</strong>
-                    <span>In the field</span>
+                    <strong>6 years</strong>
+                    <span>Ethical hacking</span>
+                </div>
+                <div>
+                    <strong>2+ years</strong>
+                    <span>Professionally</span>
                 </div>
                 <div>
                     <strong>Open for freelance</strong>
@@ -1176,7 +1186,7 @@
             <div class="about-grid">
                 <div class="about-copy">
                     <p>
-                        I'm an <strong>Associate Security Analyst</strong> working on web, API, and mobile application security. Day to day that means hands-on testing with Burp Suite and similar tooling, hunting for auth issues, broken access control, and messy business logic.
+                        I'm an <strong>Associate Security Analyst</strong> working on web, API, and mobile application security. I've been into <strong>ethical hacking and pentesting for about 6 years</strong> now, the last 2+ of them professionally. Day to day that means hands-on testing with Burp Suite and similar tooling, hunting for auth issues, broken access control, and messy business logic.
                     </p>
                     <p>
                         Lately a lot of that work touches <strong>AI and LLM systems</strong>. Prompt injection, RAG retrieval boundaries, agent tool abuse, and the ordinary web bugs sitting in the API around the model. Most teams haven't looked hard at it yet, so there's plenty to find.
@@ -1190,7 +1200,7 @@
                     <div class="social-row">
                         <a href="https://github.com/0xsh4n" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
                         <a href="https://www.linkedin.com/in/ajmalshan/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://mrshan.medium.com/" target="_blank" rel="noopener noreferrer" aria-label="Medium"><i class="fab fa-medium"></i></a>
+                        <a href="https://0xsh4n.medium.com/" target="_blank" rel="noopener noreferrer" aria-label="Medium"><i class="fab fa-medium"></i></a>
                     </div>
                 </div>
                 <aside class="about-side">
@@ -1275,13 +1285,18 @@
                     <h2 class="section-title">Things I've built</h2>
                     <p class="section-lead">A few tools and experiments from my GitHub. Mostly security flavored.</p>
                 </div>
-                <a href="https://github.com/0xsh4n" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-                    <i class="fab fa-github"></i> All repositories
-                </a>
+                <div class="projects-actions">
+                    <a href="docs/" class="btn btn-ghost">
+                        <i class="fas fa-book"></i> Tool docs
+                    </a>
+                    <a href="https://github.com/0xsh4n" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                        <i class="fab fa-github"></i> All repositories
+                    </a>
+                </div>
             </div>
 
             <div class="project-list">
-                <a class="project-item reveal" href="https://github.com/0xsh4n/TensorHawk" target="_blank" rel="noopener noreferrer">
+                <a class="project-item reveal" href="docs/#tensorhawk">
                     <div>
                         <h3>TensorHawk</h3>
                         <p>Checks AI model files before you load them. Looks through GGUF, safetensors, and PyTorch checkpoints for pickle RCE risks, leaked secrets, and PII. Runs offline and can spit out SARIF.</p>
@@ -1289,9 +1304,24 @@
                             <span class="tag">Rust</span>
                             <span class="tag">AI Security</span>
                             <span class="tag">Static Analysis</span>
+                            <span class="tag">Docs</span>
                         </div>
                     </div>
-                    <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
+                    <span class="project-link">Read docs <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <a class="project-item reveal" href="docs/#ot-orca">
+                    <div>
+                        <h3>OT-ORCA</h3>
+                        <p>Passive security scanner for OT/ICS networks. Listens to traffic, rebuilds asset inventory and Purdue-model topology, and flags findings across 13+ industrial protocols. Transmits nothing by default.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">OT / ICS</span>
+                            <span class="tag">Passive</span>
+                            <span class="tag">Docs</span>
+                        </div>
+                    </div>
+                    <span class="project-link">Read docs <i class="fas fa-arrow-right"></i></span>
                 </a>
 
                 <a class="project-item reveal" href="https://github.com/0xsh4n/HunterEngine" target="_blank" rel="noopener noreferrer">
@@ -1602,7 +1632,7 @@
                     <h2 class="section-title">Things I've written</h2>
                     <p class="section-lead">Recent posts from my Medium. Case studies from real assessments, lab notes, and things I picked up along the way.</p>
                 </div>
-                <a href="https://mrshan.medium.com/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                <a href="https://0xsh4n.medium.com/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
                     <i class="fab fa-medium"></i> Read on Medium
                 </a>
             </div>
@@ -1677,7 +1707,7 @@
             <div class="footer-social">
                 <a href="https://github.com/0xsh4n" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/ajmalshan/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://mrshan.medium.com/" target="_blank" rel="noopener noreferrer" aria-label="Medium"><i class="fab fa-medium"></i></a>
+                <a href="https://0xsh4n.medium.com/" target="_blank" rel="noopener noreferrer" aria-label="Medium"><i class="fab fa-medium"></i></a>
             </div>
         </div>
     </footer>
@@ -1769,7 +1799,7 @@
                 try {
                     const url = new URL(value);
                     return url.protocol === "https:" && (
-                        url.hostname === "mrshan.medium.com" ||
+                        url.hostname === "0xsh4n.medium.com" ||
                         url.hostname.endsWith(".medium.com")
                     );
                 } catch {
@@ -1788,31 +1818,31 @@
             };
 
             const blogGrid = document.getElementById("blog-grid");
-            const mediumFeed = encodeURIComponent("https://mrshan.medium.com/feed");
+            const mediumFeed = encodeURIComponent("https://0xsh4n.medium.com/feed");
             const feedUrl = `https://api.rss2json.com/v1/api.json?rss_url=${mediumFeed}`;
 
             const fallbackPosts = [
                 {
                     title: "A Simple URL Led to Full Admin Access: Privilege Escalation Case Study",
-                    link: "https://mrshan.medium.com/a-simple-url-led-to-full-admin-access-privilege-escalation-case-study-c77e377c3f98",
+                    link: "https://0xsh4n.medium.com/a-simple-url-led-to-full-admin-access-privilege-escalation-case-study-c77e377c3f98",
                     pubDate: "2026-06-15",
                     description: "How a single unguarded admin URL turned into full admin access during a web app assessment.",
                 },
                 {
                     title: "How I Discovered Two Critical Authorization Bugs in a Web Application",
-                    link: "https://mrshan.medium.com/how-i-discovered-two-critical-authorization-bugs-in-a-web-application-62af14a15df7",
+                    link: "https://0xsh4n.medium.com/how-i-discovered-two-critical-authorization-bugs-in-a-web-application-62af14a15df7",
                     pubDate: "2026-06-04",
                     description: "A walkthrough of two authorization flaws found while testing a real web application.",
                 },
                 {
                     title: "How I Discovered Critical Bugs in an Android Employee Management App",
-                    link: "https://mrshan.medium.com/how-i-discovered-critical-bugs-in-an-android-employee-management-app-8a842173d2dc",
+                    link: "https://0xsh4n.medium.com/how-i-discovered-critical-bugs-in-an-android-employee-management-app-8a842173d2dc",
                     pubDate: "2026-05-27",
                     description: "Notes from an Android pentest on an employee management app and the bugs that stood out.",
                 },
                 {
                     title: "Privilege Escalation via Response Manipulation",
-                    link: "https://mrshan.medium.com/privilege-escalation-via-response-manipulation",
+                    link: "https://0xsh4n.medium.com/privilege-escalation-via-response-manipulation",
                     pubDate: "2025-05-16",
                     description: "How tweaking a response during a pentest led to a privilege escalation finding.",
                 },
